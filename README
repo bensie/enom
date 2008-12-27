@@ -4,6 +4,8 @@ EnomApi
 A rails plugin that connects to the Enom Domain Registrar's API for checking
 domain name availability, domain contact information, nameserver settings, etc.
 
+Frankly, it needs a substantial amount of work at this point, but it's a start.
+
 Example
 =======
 
