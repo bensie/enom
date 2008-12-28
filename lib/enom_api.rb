@@ -28,8 +28,25 @@ module EnomApi
       get_collection_of_items('GetDNS', 'dns')
     end
     
-    def nameservers=(nameservers)
-      set_collection_of_items()
+    def nameservers=(nameservers)    
+    end
+    
+    def registrant_contact     
+    end
+    
+    def registrant_contact=(contact)     
+    end
+    
+    def technical_contact     
+    end
+    
+    def technical_contact=(contact)    
+    end
+    
+    def administrative_contact     
+    end
+    
+    def administrative_contact=(contact)     
     end
     
     def locked?
