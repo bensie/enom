@@ -31,22 +31,36 @@ module EnomApi
     def nameservers=(nameservers)    
     end
     
-    def registrant_contact     
+    def registrant_contact
+      get_contact_info_for("Registrant")
     end
     
-    def registrant_contact=(contact)     
+    def registrant_contact=(contact)
+      set_contact_info_for("Registrant", contact)
     end
     
-    def technical_contact     
+    def billing_contact
+      get_contact_info_for("Billing")
     end
     
-    def technical_contact=(contact)    
+    def billing_contact=(contact)
+      set_contact_info_for("Billing", contact)
     end
     
-    def administrative_contact     
+    def technical_contact
+      get_contact_info_for("Technical")  
     end
     
-    def administrative_contact=(contact)     
+    def technical_contact=(contact)
+      set_contact_info_for("Technical", contact)
+    end
+    
+    def administrative_contact
+      get_contact_info_for("Administrative")
+    end
+    
+    def administrative_contact=(contact)
+      set_contact_info_for("Administrative", contact)  
     end
     
     def locked?
@@ -71,6 +85,14 @@ module EnomApi
         items << element.text
       }
       return items
+    end
+    
+    def get_contact_info_for(contact_type)
+      
+    end
+    
+    def set_contact_info_for(contact_type, contact_data)
+      
     end
     
     def set_single_item(enom_command)
