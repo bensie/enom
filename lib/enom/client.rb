@@ -3,7 +3,7 @@ module Enom
 
   class Client
 
-    def initialize(username, password, test = false, ssl = false)
+    def initialize(username, password, ssl = true, test = false)
       @@username = username
       @@password = password
       @@protocol = ssl == true ? "https" : "http"
@@ -11,14 +11,16 @@ module Enom
     end
 
     def find_domain(name)
-      get('Command' => 'GetDomainInfo', 'SLD' => name.split('.').first, 'TLD' => name.split('.').last)
+      payload = get('Command' => 'GetDomainInfo', 'SLD' => name.split('.').first, 'TLD' => name.split('.').last)
+      Domain.new(payload)
     end
 
     private
 
     def get(params = {})
       params.merge!(default_params)
-      Crack::XML.parse(RestClient.get(url, {:params => params }))
+      payload = Crack::XML.parse(RestClient.get(url, {:params => params }))
+      raise InterfaceError unless payload['interface_response']['ErrCount'] == '0'
     end
 
     def url
