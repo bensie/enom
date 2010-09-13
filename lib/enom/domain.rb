@@ -21,7 +21,7 @@ module Enom
     end
 
     def nameservers
-      @domain_payload['interface_response']['GetDomainInfo']['configuration']['dns']
+      @domain_payload['interface_response']['GetDomainInfo']['services']['entry'].first['configuration']['dns']
     end
 
     def update_nameservers
