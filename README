@@ -1,37 +1,7 @@
-EnomApi
+Enom
 =======
 
-A rails plugin that connects to the Enom Domain Registrar's API for checking
-domain name availability, domain contact information, nameserver settings, etc.
+A ruby wrapper for the Enom Domain Registrar's API for checking domain name
+availability, domain contact information, nameserver settings, etc.
 
-Frankly, it needs a substantial amount of work at this point, but it's a start.
-
-Example
-=======
-
-domain.rb (Active Record model for managing all domain names)
-----
-class Domain < ActiveRecord::Base
-  manage_with_enom
-  
-  validate :domain_exists_in_enom_account?, :on => :create
-  validates_uniqueness_of :name
-end
-
-You'll need a config file in 'config/enom_config.yml that looks something like the following:
-development:
-  url: http://resellertest.enom.com/interface.asp?
-  username: yourusername
-  password: yourpassword
-
-test:
-    url: http://resellertest.enom.com/interface.asp?
-    username: yourusername
-    password: yourpassword
-    
-production:
-    url: http://reseller.enom.com/interface.asp?
-    username: yourusername
-    password: yourpassword
-
-Copyright (c) 2008 James Miller, released under the MIT license
+Copyright (c) 2010 James Miller, released under the MIT license
