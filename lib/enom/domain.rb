@@ -1,12 +1,12 @@
 module Enom
-  class Domain
+  class Domain < Client
 
     attr_reader :name, :sld, :tld
 
     def initialize(payload)
-      @name      = payload['interface_response']['GetDomainInfo']['domainname']
-      @sld, @tld = @name.split('.')
-      @domain_payload   = payload
+      @name           = payload['interface_response']['GetDomainInfo']['domainname']
+      @sld, @tld      = @name.split('.')
+      @domain_payload = payload
     end
 
     def lock

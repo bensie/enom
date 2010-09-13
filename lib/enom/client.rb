@@ -20,7 +20,11 @@ module Enom
     def get(params = {})
       params.merge!(default_params)
       payload = Crack::XML.parse(RestClient.get(url, {:params => params }))
-      raise InterfaceError unless payload['interface_response']['ErrCount'] == '0'
+      if payload['interface_response']['ErrCount'] == '0'
+        return payload
+      else
+        raise InterfaceError
+      end
     end
 
     def url
