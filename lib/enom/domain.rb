@@ -17,7 +17,7 @@ module Enom
 
     def locked?
       payload = get('Command' => 'GetRegLock', 'SLD' => sld, 'TLD' => tld)
-      payload['interface_response']['GetRegLock']['RegLock'] == '1' ? true : false
+      payload['interface_response']['reg_lock'] == '1' ? true : false
     end
 
     def nameservers
