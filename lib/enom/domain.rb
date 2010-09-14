@@ -11,10 +11,12 @@ module Enom
 
     def lock
       get('Command' => 'SetRegLock', 'SLD' => sld, 'TLD' => tld, 'UnlockRegistrar' => '0')
+      return nil
     end
 
     def unlock
       get('Command' => 'SetRegLock', 'SLD' => sld, 'TLD' => tld, 'UnlockRegistrar' => '1')
+      return nil
     end
 
     def locked?
@@ -35,23 +37,28 @@ module Enom
           count += 1
         end
         get({'Command' => 'ModifyNS', 'SLD' => sld, 'TLD' => tld}.merge(ns))
+        return nil
       else
         raise InvalidNameServerCount, "A minimum of 2 and maximum of 12 nameservers are required"
       end
     end
 
     def expiration_date
-      @domain_payload['interface_response']['GetDomainInfo']['status']['expiration']
+      date_string = @domain_payload['interface_response']['GetDomainInfo']['status']['expiration']
+      Date.parse(date_string.split(' ').first)
     end
 
     def expired?
+      registration_status == 'Expired'
     end
 
     def registration_status
       @domain_payload['interface_response']['GetDomainInfo']['status']['registrationstatus']
     end
 
-    def renew
+    def renew!(years = 1)
+      # get('Command' => 'Renew', 'SLD' => sld, 'TLD' => tld)
+      raise NotImplementedError
     end
 
   end
