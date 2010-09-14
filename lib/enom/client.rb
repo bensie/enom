@@ -11,7 +11,8 @@ module Enom
     end
 
     def find_domain(name)
-      payload = get('Command' => 'GetDomainInfo', 'SLD' => name.split('.').first, 'TLD' => name.split('.').last)
+      sld, tld = name.split('.')
+      payload = get('Command' => 'GetDomainInfo', 'SLD' => sld, 'TLD' => tld)
       Domain.new(payload)
     end
 
