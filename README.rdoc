@@ -1,0 +1,8 @@
+= Enom
+
+A ruby wrapper for the Enom Domain Registrar's API for checking domain name
+availability, domain contact information, name server settings, etc.
+
+= Copyright
+
+Copyright (c) 2010 James Miller
