@@ -17,7 +17,7 @@ module Enom
     end
 
     def get_balance
-      get('Command' => 'GetBalance')
+      get('Command' => 'GetBalance')['interface_response']['AvailableBalance'].gsub(',', '').to_f
     end
 
     private
