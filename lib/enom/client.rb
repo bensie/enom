@@ -15,6 +15,10 @@ module Enom
       Domain.new(payload)
     end
 
+    def get_balance
+      get('Command' => 'GetBalance')
+    end
+
     private
 
     def get(params = {})

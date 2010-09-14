@@ -10,9 +10,11 @@ module Enom
     end
 
     def lock
+      get('Command' => 'SetRegLock', 'SLD' => sld, 'TLD' => tld, 'UnlockRegistrar' => '0')
     end
 
     def unlock
+      get('Command' => 'SetRegLock', 'SLD' => sld, 'TLD' => tld, 'UnlockRegistrar' => '1')
     end
 
     def locked?
@@ -24,7 +26,18 @@ module Enom
       @domain_payload['interface_response']['GetDomainInfo']['services']['entry'].first['configuration']['dns']
     end
 
-    def update_nameservers
+    def update_nameservers(nameservers)
+      count = 1
+      ns = {}
+      if (2..12).include?(nameservers.size)
+        nameservers.each do |nameserver|
+          ns.merge!("NS#{count}" => nameserver)
+          count += 1
+        }
+        get({'Command' => 'ModifyNS', 'SLD' => sld, 'TLD' => tld}.merge(ns))
+      else
+        raise InvalidNameServerCount, "A minimum of 2 and maximum of 12 nameservers are required"
+      end
     end
 
     def expiration_date
