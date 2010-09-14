@@ -33,7 +33,7 @@ module Enom
         nameservers.each do |nameserver|
           ns.merge!("NS#{count}" => nameserver)
           count += 1
-        }
+        end
         get({'Command' => 'ModifyNS', 'SLD' => sld, 'TLD' => tld}.merge(ns))
       else
         raise InvalidNameServerCount, "A minimum of 2 and maximum of 12 nameservers are required"
