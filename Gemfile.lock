@@ -1,0 +1,21 @@
+PATH
+  remote: .
+  specs:
+    enom (0.9.0.pre)
+      httparty (~> 0.6.1)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    crack (0.1.8)
+    httparty (0.6.1)
+      crack (= 0.1.8)
+    shoulda (2.11.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  enom!
+  httparty (~> 0.6.1)
+  shoulda

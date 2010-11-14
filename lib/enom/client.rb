@@ -1,58 +1,40 @@
-require 'cgi'
 module Enom
 
   class Client
+    include HTTParty
 
-    def initialize(username, password, ssl = true, test = false)
-      @@username = username
-      @@password = password
-      @@protocol = ssl == true ? "https" : "http"
-      @@endpoint = test == true ? "resellertest.enom.com" : "reseller.enom.com"
-    end
+    class << self
+      attr_accessor :username, :password, :test
+      alias_method :test?, :test
 
-    def find_domain(name)
-      sld, tld = name.split('.')
-      payload = get('Command' => 'GetDomainInfo', 'SLD' => sld, 'TLD' => tld)
-      Domain.new(payload)
-    end
+      # All requests must contain the UID, PW, and ResponseType query parameters
+      def default_params
+        { 'UID' => self.username, 'PW' => self.password, 'ResponseType' => 'xml'}
+      end
 
-    def register_domain!(name, options = {})
-      sld, tld = name.split('.')
-      opts = {}
-      if options[:nameservers]
-        count = 1
-        options[:nameservers].each do |nameserver|
-          opts.merge!("NS#{count}" => nameserver)
-          count += 1
+      # Enom has a test platform and a production platform.  Both are configured to use
+      # HTTPS at all times. Don't forget to configure permitted IPs (in both environments)
+      # or you'll get InterfaceErrors.
+      def base_uri
+        @base_uri = test? ? "https://resellertest.enom.com/interface.asp" : "https://reseller.enom.com/interface.asp"
+      end
+
+      # All requests to Enom are GET requests, even when we're changing data.  Unfortunately,
+      # Enom also does not provide HTTP status codes to alert for authentication failures
+      # or other helpful statuses -- everything comes back as a 200.
+      def request(params = {})
+        params.merge!(default_params)
+        response = get(base_uri, :query => params)
+        case response.code
+        when 200
+          if response['interface_response']['ErrCount'] == '0'
+            return response
+          else
+            raise InterfaceError
+          end
         end
       end
-      opts.merge!('NumYears' => options[:years]) if options[:years]
-      purchase = get({'Command' => 'Purchase', 'SLD' => sld, 'TLD' => tld}.merge(opts))
-      find_domain(name)
-    end
 
-    def get_balance
-      get('Command' => 'GetBalance')['interface_response']['AvailableBalance'].gsub(',', '').to_f
-    end
-
-    private
-
-    def get(params = {})
-      params.merge!(default_params)
-      payload = Crack::XML.parse(RestClient.get(url, {:params => params }))
-      if payload['interface_response']['ErrCount'] == '0'
-        return payload
-      else
-        raise InterfaceError
-      end
-    end
-
-    def url
-      @@protocol + "://" + @@endpoint + "/interface.asp"
-    end
-
-    def default_params
-      { 'UID' => @@username, 'PW' => @@password, 'ResponseType' => 'xml'}
     end
 
   end
