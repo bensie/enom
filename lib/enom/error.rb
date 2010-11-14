@@ -1,5 +1,11 @@
 module Enom
 
+  class Error < StandardError
+    def initialize(message)
+      super "An error occurred: #{message}"
+    end
+  end
+
   class InterfaceError < StandardError
     def initialize(message = nil)
       if message
