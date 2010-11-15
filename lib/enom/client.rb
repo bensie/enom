@@ -34,8 +34,6 @@ module Enom
           end
         end
       end
-
     end
-
   end
 end

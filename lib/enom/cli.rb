@@ -1,8 +1,22 @@
+require 'yaml'
 module Enom
 
   class CommandNotFound < RuntimeError; end
 
   class CLI
+
+    def initialize
+      # If the username and password are set elsewhere, they take precedence
+      unless Enom::Client.username && Enom::Client.password
+        if File.exists?("~/.enomconfig")
+          credentials = YAML.load(File.new(File.expand_path('~/.enomconfig')))
+          Enom::Client.username = credentials['username']
+          Enom::Client.password = credentials['password']
+        else
+          raise RuntimeError, "Please provide a username/password as arguments create a config file with credentials in ~/.enomconfig"
+        end
+      end
+    end
 
     def execute(command_name, args, options={})
       command = commands[command_name]

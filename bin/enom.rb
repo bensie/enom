@@ -4,17 +4,14 @@ $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'enom'
 require 'enom/cli'
 
-cli = Enom::CLI.new
-
 require 'optparse'
-require 'yaml'
 
 def usage
   $stderr.puts <<-EOF
 
 This is a command line tool for Enom.
 
-Before using this tool you should create a file called .enom in your home
+Before using this tool you should create a file called .enomconfig in your home
 directory and add the following to that file:
 
 username: YOUR_USERNAME
@@ -35,6 +32,10 @@ help                                    # Show this usage
 info                                    # Show your account information
 
 list                                    # List all domains
+check domain.com                        # Check if a domain is available (for registration)
+describe domain.com                     # Describe the given domain
+register domain.com                     # Register the given domain with Enom
+transfer domain.com [authcode]          # Transfer the given domain into Enom
 
 EOF
 end
@@ -59,20 +60,10 @@ command = ARGV.shift
 if command.nil? || command == 'help'
   usage
 else
-  unless Enom::Client.username && Enom::Client.password
-    if File.exists?("~/.enomconfig")
-      credentials = YAML.load(File.new(File.expand_path('~/.enomconfig')))
-      Enom::Client.username = credentials['username']
-      Enom::Client.password = credentials['password']
-    else
-      raise RuntimeError, "Please provide a username/password as arguments create a config file with credentials in ~/.enomconfig"
-    end
-  end
-
+  cli = Enom::CLI.new
   begin
     cli.execute(command, ARGV, options)
   rescue Enom::CommandNotFound => e
     puts e.message
   end
-
 end
