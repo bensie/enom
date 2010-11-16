@@ -70,10 +70,12 @@ module Enom
           opts.merge!("NS#{count}" => nameserver)
           count += 1
         end
+      else
+        opts.merge!("UseDNS" => "default")
       end
       opts.merge!('NumYears' => options[:years]) if options[:years]
-      purchase = get({'Command' => 'Purchase', 'SLD' => sld, 'TLD' => tld}.merge(opts))
-      self.find(name)
+      response = Client.request({'Command' => 'Purchase', 'SLD' => sld, 'TLD' => tld}.merge(opts))
+      Domain.find(name)
     end
 
     # Lock the domain at the registrar so it can't be transferred

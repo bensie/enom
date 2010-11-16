@@ -30,7 +30,8 @@ module Enom
           if response['interface_response']['ErrCount'] == '0'
             return response
           else
-            raise InterfaceError
+            p response if test?
+            raise InterfaceError, response['interface_response']['errors'].values.join(", ")
           end
         end
       end
