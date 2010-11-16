@@ -36,10 +36,12 @@ module Enom
 
     def commands
       {
-        'list' => Enom::Commands::ListDomains
+        'list' => Enom::Commands::ListDomains,
+        'check' => Enom::Commands::CheckDomain
       }
     end
 
   end
 end
 require 'enom/commands/list_domains'
+require 'enom/commands/check_domain'

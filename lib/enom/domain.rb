@@ -36,14 +36,18 @@ module Enom
     end
 
     # Determine if the domain is available for purchase
-    # def self.check(name)
-    #   sld, tld = name.split('.')
-    #   response = self.get("#{Client.base_uri}/domains/#{name}/check.json", options)
-    #
-    #   p response if Client.test?
-    #
-    #   # return "registered" or "available"
-    # end
+    def self.check(name)
+      sld, tld = name.split('.')
+      response = Client.request("Command" => "Check", "SLD" => sld, "TLD" => tld)["interface_response"]["RRPCode"]
+
+      p response if Client.test?
+
+      if response == "210"
+        "available"
+      else
+        "unavailable"
+      end
+    end
 
     # Find and return all domains in the account
     def self.all(options = {})
