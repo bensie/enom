@@ -9,8 +9,9 @@ module Enom
     def initialize
       # If the username and password are set elsewhere, they take precedence
       unless Enom::Client.username && Enom::Client.password
-        if File.exists?(File.expand_path("~/.enomconfig"))
-          credentials = YAML.load(File.new(File.expand_path('~/.enomconfig')))
+        file = File.expand_path("~/.enomconfig")
+        if File.exists?(file)
+          credentials = YAML.load(File.new(file))
           Enom::Client.username = credentials['username']
           Enom::Client.password = credentials['password']
         else
