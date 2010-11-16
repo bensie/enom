@@ -70,5 +70,7 @@ else
     puts e.message
   rescue Enom::InvalidCredentials => e
     puts e.message
+  rescue Enom::InterfaceError => e
+    puts e.message
   end
 end
