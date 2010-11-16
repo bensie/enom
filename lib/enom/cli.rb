@@ -2,6 +2,7 @@ require 'yaml'
 module Enom
 
   class CommandNotFound < RuntimeError; end
+  class InvalidCredentials < RuntimeError; end
 
   class CLI
 
@@ -13,7 +14,7 @@ module Enom
           Enom::Client.username = credentials['username']
           Enom::Client.password = credentials['password']
         else
-          raise RuntimeError, "Please provide a username/password as arguments create a config file with credentials in ~/.enomconfig"
+          raise InvalidCredentials, "Please provide a username/password as arguments create a config file with credentials in ~/.enomconfig"
         end
       end
     end

@@ -21,6 +21,9 @@ Alternatively you can pass the credentials via command-line arguments, as in:
 
 enom -u username -p password command
 
+You can run commands from the test interface with the -t flag:
+enom -u username -p password -t command
+
 == Commands
 
 All commands are executed as enom [options] command [command-options] args
@@ -60,10 +63,12 @@ command = ARGV.shift
 if command.nil? || command == 'help'
   usage
 else
-  cli = Enom::CLI.new
   begin
+    cli = Enom::CLI.new
     cli.execute(command, ARGV, options)
   rescue Enom::CommandNotFound => e
+    puts e.message
+  rescue Enom::InvalidCredentials => e
     puts e.message
   end
 end
