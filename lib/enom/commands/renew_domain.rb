@@ -1,6 +1,6 @@
 module Enom
   module Commands
-    class RegisterDomain
+    class RenewDomain
       def execute(args, options={})
         name = args.shift
         domain = Domain.renew!(name)
