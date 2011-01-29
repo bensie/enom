@@ -25,7 +25,7 @@ module Enom
       # ...
       # end
       define_method "#{contact_type.downcase}_contact_info" do
-        response = Client.request('Command' => 'GetContacts', 'SLD' => sld, 'TLD' => tld)["interface_response"]["GetContacts"][contact_type]
+        Client.request('Command' => 'GetContacts', 'SLD' => sld, 'TLD' => tld)["interface_response"]["GetContacts"][contact_type]
       end
 
       # Define setter methods for each contact type
@@ -59,6 +59,10 @@ module Enom
 
         # Fetch the new contact info and return it
         send("#{contact_type.downcase}_contact_info")
+      end
+
+      def all_contact_info
+        Client.request('Command' => 'GetContacts', 'SLD' => sld, 'TLD' => tld)["interface_response"]["GetContacts"].select{|k| CONTACT_TYPES.include?(k)}
       end
 
       # Update all contact types with the same data

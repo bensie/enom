@@ -17,8 +17,9 @@ module Enom
     def initialize(attributes)
       @name = attributes["DomainName"] || attributes["domainname"]
       @sld, @tld = @name.split('.')
-      expiration_string = attributes["expiration_date"] || attributes["status"]["expiration"]
-      @expiration_date = Date.strptime(expiration_string.split(' ').first, "%m/%d/%Y")
+
+      expiration_date_string = attributes["expiration_date"] || attributes["status"]["expiration"]
+      @expiration_date = Date.strptime(expiration_date_string.split(' ').first, "%m/%d/%Y")
 
       # If we have more attributes for the domain from running GetDomainInfo
       # (as opposed to GetAllDomains), we should save it to the instance to
@@ -130,8 +131,11 @@ module Enom
     end
 
     def expiration_date
-      date_string = @domain_payload['interface_response']['GetDomainInfo']['status']['expiration']
-      Date.strptime(date_string.split(' ').first, "%m/%d/%Y")
+      unless @expiration_date
+        date_string = @domain_payload['interface_response']['GetDomainInfo']['status']['expiration']
+        @expiration_date = Date.strptime(date_string.split(' ').first, "%m/%d/%Y")
+      end
+      @expiration_date
     end
 
     def registration_status
