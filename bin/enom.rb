@@ -38,6 +38,7 @@ list                                    # List all domains
 check domain.com                        # Check if a domain is available (for registration)
 describe domain.com                     # Describe the given domain
 register domain.com                     # Register the given domain with Enom
+renew domain.com                        # Renew the given domain with Enom
 transfer domain.com [authcode]          # Transfer the given domain into Enom
 
 EOF
