@@ -17,7 +17,7 @@ module Enom
       @name = attributes["DomainName"] || attributes["domainname"]
       @sld, @tld = @name.split('.')
       expiration_string = attributes["expiration_date"] || attributes["status"]["expiration"]
-      @expiration_date = Date.parse(expiration_string.split(' ').first)
+      @expiration_date = Date.strptime(expiration_string.split(' ').first, "%m/%d/%Y")
 
       # If we have more attributes for the domain from running GetDomainInfo
       # (as opposed to GetAllDomains), we should save it to the instance to
@@ -75,6 +75,15 @@ module Enom
       end
       opts.merge!('NumYears' => options[:years]) if options[:years]
       response = Client.request({'Command' => 'Purchase', 'SLD' => sld, 'TLD' => tld}.merge(opts))
+      Domain.find(name)
+    end
+
+    # Renew the domain
+    def self.renew!(name, options = {})
+      sld, tld = name.split('.')
+      opts = {}
+      opts.merge!('NumYears' => options[:years]) if options[:years]
+      response = Client.request({'Command' => 'Extend', 'SLD' => sld, 'TLD' => tld}.merge(opts))
       Domain.find(name)
     end
 
@@ -142,9 +151,8 @@ module Enom
       registration_status == "Expired"
     end
 
-    def renew!(years = 1)
-      # get('Command' => 'Renew', 'SLD' => sld, 'TLD' => tld)
-      raise NotImplementedError
+    def renew!(options = {})
+      Domain.renew!(name, options)
     end
 
     private
