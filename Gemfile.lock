@@ -17,5 +17,4 @@ PLATFORMS
 
 DEPENDENCIES
   enom!
-  httparty (~> 0.6.1)
   shoulda
