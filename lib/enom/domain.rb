@@ -31,7 +31,6 @@ module Enom
     def self.find(name)
       sld, tld = name.split('.')
       response = Client.request('Command' => 'GetDomainInfo', 'SLD' => sld, 'TLD' => tld)["interface_response"]["GetDomainInfo"]
-      p response if Client.test?
       Domain.new(response)
     end
 
@@ -39,8 +38,6 @@ module Enom
     def self.check(name)
       sld, tld = name.split('.')
       response = Client.request("Command" => "Check", "SLD" => sld, "TLD" => tld)["interface_response"]["RRPCode"]
-
-      p response if Client.test?
 
       if response == "210"
         "available"
@@ -52,8 +49,6 @@ module Enom
     # Find and return all domains in the account
     def self.all(options = {})
       response = Client.request("Command" => "GetAllDomains")["interface_response"]["GetAllDomains"]["DomainDetail"]
-
-      p response if Client.test?
 
       domains = []
       response.each {|d| domains << Domain.new(d) }
@@ -135,7 +130,7 @@ module Enom
 
     def expiration_date
       date_string = @domain_payload['interface_response']['GetDomainInfo']['status']['expiration']
-      Date.parse(date_string.split(' ').first)
+      Date.strptime(date_string.split(' ').first, "%m/%d/%Y")
     end
 
     def registration_status
