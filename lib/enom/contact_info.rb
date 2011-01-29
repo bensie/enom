@@ -25,11 +25,11 @@ module Enom
       # ...
       # end
       define_method "#{contact_type.downcase}_contact_info" do
-        response = Client.request({'Command' => 'GetContacts', 'SLD' => sld, 'TLD' => tld}.merge(opts))["interface_response"]["GetContacts"][contact_type]
+        response = Client.request('Command' => 'GetContacts', 'SLD' => sld, 'TLD' => tld)["interface_response"]["GetContacts"][contact_type]
       end
 
       # Define setter methods for each contact type
-      # def update_registrant_contact_info
+      # def update_registrant_contact_info(contact_data = {})
       # ...
       # end
       define_method "update_#{contact_type.downcase}_contact_info" do |contact_data = {}|
@@ -54,8 +54,11 @@ module Enom
           opts.merge!("#{contact_type}#{k}" => v)
         end
 
-        response = Client.request({'Command' => 'Contacts', 'SLD' => sld, 'TLD' => tld}.merge(opts))["interface_response"]
-        return response["Done"] == "true"
+        # Send the new contact details to Enom
+        Client.request({'Command' => 'Contacts', 'SLD' => sld, 'TLD' => tld}.merge(opts))
+
+        # Fetch the new contact info and return it
+        send("#{contact_type.downcase}_contact_info")
       end
 
       # Update all contact types with the same data
