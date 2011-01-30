@@ -19,4 +19,5 @@ PLATFORMS
 DEPENDENCIES
   enom!
   fakeweb
+  httparty (~> 0.6.1)
   shoulda

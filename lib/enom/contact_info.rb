@@ -32,7 +32,7 @@ module Enom
       # def update_registrant_contact_info(contact_data = {})
       # ...
       # end
-      define_method "update_#{contact_type.downcase}_contact_info" do |contact_data = {}|
+      define_method "update_#{contact_type.downcase}_contact_info" do |contact_data|
 
         # Remove attributes that are not in Enom's list of available fields
         contact_data.select!{|k| FIELDS.map{|f| f[:name] }.include?(k)}
