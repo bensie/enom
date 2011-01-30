@@ -229,7 +229,7 @@ class Test::Unit::TestCase
       EOF
     },
     {
-      :command => "",
+      :command => "GetBalance",
       :request => "https://reseller.enom.com/interface.asp?Command=GetBalance&UID=resellid&PW=resellpw&ResponseType=xml",
       :response => <<-EOF
         <?xml version="1.0"?>
