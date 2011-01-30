@@ -4,7 +4,7 @@ module Enom
       def execute(args, options={})
         name = args.shift
         response = Domain.check(name)
-        puts "Check domain result for #{name}: #{response}"
+        puts "#{name} is #{response}"
       end
     end
   end

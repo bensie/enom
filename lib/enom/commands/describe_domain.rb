@@ -10,14 +10,14 @@ module Enom
 
         puts "Name Servers:"
         domain.nameservers.each do |ns|
-          puts "\t#{ns}"
+          puts "\s\s#{ns}"
         end
 
         puts "Contact Info:"
         domain.all_contact_info.each do |k,v|
-          puts "\t#{k}:"
-          v.each do |k,v|
-            puts "\t\t#{k}: #{v}"
+          puts "\s\s#{k}:"
+          v.each do |kk,vv|
+            puts "\s\s\s\s#{kk.gsub(k, '')}: #{vv}"
           end
         end
       end

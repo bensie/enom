@@ -5,7 +5,7 @@ module Enom
         domains = Domain.all
         puts "Found #{domains.length} domains:"
         domains.each do |domain|
-          puts "\t#{domain.name}"
+          puts "\s\s#{domain.name}"
         end
       end
     end
