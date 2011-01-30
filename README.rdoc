@@ -3,6 +3,10 @@
 A ruby wrapper for the Enom Domain Registrar's API for checking domain name
 availability, domain contact information, name server settings, etc.
 
+gem install enom
+
+See the Wiki (https://github.com/bensie/enom/wiki) for usage instructions
+
 = Copyright
 
-Copyright (c) 2010 James Miller
+Copyright (c) 2011 James Miller
