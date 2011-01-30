@@ -1,9 +1,6 @@
 require 'yaml'
 module Enom
 
-  class CommandNotFound < RuntimeError; end
-  class InvalidCredentials < RuntimeError; end
-
   class CLI
 
     def initialize

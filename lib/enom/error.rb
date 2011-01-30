@@ -1,5 +1,8 @@
 module Enom
 
+  class CommandNotFound < RuntimeError; end
+  class InvalidCredentials < RuntimeError; end
+
   class Error < StandardError
     def initialize(message)
       super "An error occurred: #{message}"
