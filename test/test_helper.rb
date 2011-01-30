@@ -227,6 +227,25 @@ class Test::Unit::TestCase
           <debug><![CDATA[]]></debug>
         </interface-response>
       EOF
+    },
+    {
+      :command => "",
+      :request => "https://reseller.enom.com/interface.asp?Command=GetBalance&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF
+        <?xml version="1.0"?>
+        <interface-response>
+          <Reseller>1</Reseller>
+          <Balance>3,709.20</Balance>
+          <AvailableBalance>3,669.40</AvailableBalance>
+          <DomainCount>74</DomainCount>
+          <Command>GETBALANCE</Command>
+          <ErrCount>0</ErrCount>
+          <Server>ResellerTest</Server>
+          <Site>enom</Site>
+          <Done>true</Done>
+          <debug><![CDATA[]]></debug>
+        </interface-response>
+      EOF
     }
   ]
 
