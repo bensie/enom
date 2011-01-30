@@ -4,7 +4,9 @@ module Enom
       def execute(args, options={})
         name = args.shift
         domain = Domain.renew!(name)
-        puts "Renewed #{domain.name}"
+        output = "Renewed #{domain.name}"
+        puts output
+        return output
       end
     end
   end

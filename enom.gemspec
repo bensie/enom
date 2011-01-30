@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.has_rdoc = false
   s.add_dependency('httparty', '~> 0.6.1')
   s.add_development_dependency('shoulda')
+  s.add_development_dependency('fakeweb')
   s.executables = %w(enom)
   s.default_executable = "enom"
 end
