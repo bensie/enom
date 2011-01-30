@@ -108,6 +108,12 @@ module Enom
     end
     alias_method :locked?, :locked
 
+    # Check if the domain is currently unlocked.  unlocked? helper method also available
+    def unlocked
+      !locked?
+    end
+    alias_method :unlocked?, :unlocked
+
     # Return the DNS nameservers that are currently used for the domain
     def nameservers
       get_extended_domain_attributes unless @nameservers
