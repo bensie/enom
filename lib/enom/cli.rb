@@ -41,7 +41,7 @@ module Enom
         'check'    => Enom::Commands::CheckDomain,
         'register' => Enom::Commands::RegisterDomain,
         'renew'    => Enom::Commands::RenewDomain,
-        'describe'    => Enom::Commands::DescribeDomain
+        'describe' => Enom::Commands::DescribeDomain
       }
     end
 
