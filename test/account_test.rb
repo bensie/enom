@@ -6,6 +6,7 @@ class AccountTest < Test::Unit::TestCase
     setup do
       Enom::Client.username = "resellid"
       Enom::Client.password = "resellpw"
+      Enom::Client.test = false
     end
 
     should "return the available account balance" do
