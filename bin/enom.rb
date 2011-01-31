@@ -32,7 +32,6 @@ All commands are executed as enom [options] command [command-options] args
 The following commands are available:
 
 help                                    # Show this usage
-info                                    # Show your account information
 
 list                                    # List all domains
 check domain.com                        # Check if a domain is available (for registration)
