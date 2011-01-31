@@ -241,8 +241,8 @@ class Test::Unit::TestCase
           <DomainCount>74</DomainCount>
           <Command>GETBALANCE</Command>
           <ErrCount>0</ErrCount>
-          <Server>ResellerTest</Server>
-          <Site>enom</Site>
+          <Server>RESELLERTEST</Server>
+          <Site>eNom</Site>
           <Done>true</Done>
           <debug><![CDATA[]]></debug>
         </interface-response>
@@ -296,6 +296,33 @@ class Test::Unit::TestCase
           <IsRealTimeTLD>True</IsRealTimeTLD>
           <TimeDifference>+08.00</TimeDifference>
           <ExecTime>1.016</ExecTime>
+          <Done>true</Done>
+          <debug><![CDATA[]]></debug>
+        </interface-response>
+      EOF
+    },
+    {
+      :command => "ModifyNS",
+      :request => "https://reseller.enom.com/interface.asp?Command=ModifyNS&SLD=test123456test123456&TLD=com&NS1=ns1.foo.com&NS2=ns2.foo.com&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF
+        <?xml version="1.0"?>
+        <interface-response>
+          <reg-lock>0</reg-lock>
+          <registrar>E</registrar>
+          <RRPCode>200</RRPCode>
+          <RRPText>Command completed successfully</RRPText>
+          <Command>MODIFYNS</Command>
+          <Language>eng</Language>
+          <ErrCount>0</ErrCount>
+          <ResponseCount>0</ResponseCount>
+          <MinPeriod>1</MinPeriod>
+          <MaxPeriod>10</MaxPeriod>
+          <Server>RESELLERTEST</Server>
+          <Site>eNom</Site>
+          <IsLockable>True</IsLockable>
+          <IsRealTimeTLD>True</IsRealTimeTLD>
+          <TimeDifference>+08.00</TimeDifference>
+          <ExecTime>1.594</ExecTime>
           <Done>true</Done>
           <debug><![CDATA[]]></debug>
         </interface-response>

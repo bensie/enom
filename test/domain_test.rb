@@ -63,15 +63,32 @@ class DomainTest < Test::Unit::TestCase
         assert !@domain.unlocked?
       end
 
-      should "have default Enom nameservers" do
-        nameservers = [
-          "dns1.name-services.com",
-          "dns2.name-services.com",
-          "dns3.name-services.com",
-          "dns4.name-services.com",
-          "dns5.name-services.com"
-        ]
-        assert_equal nameservers, @domain.nameservers
+      context "with default nameservers" do
+        should "have default Enom nameservers" do
+          nameservers = [
+            "dns1.name-services.com",
+            "dns2.name-services.com",
+            "dns3.name-services.com",
+            "dns4.name-services.com",
+            "dns5.name-services.com"
+          ]
+          assert_equal nameservers, @domain.nameservers
+        end
+        should "update nameservers if there are 2 or more provided" do
+          new_nameservers = ["ns1.foo.com", "ns2.foo.com"]
+          @domain.update_nameservers(new_nameservers)
+          assert_equal new_nameservers, @domain.nameservers
+        end
+        should "not update nameservers if less than 2 or more than 12 are provided" do
+          not_enough = ["ns1.foo.com"]
+          too_many = ["ns1.foo.com", "ns2.foo.com", "ns3.foo.com", "ns4.foo.com", "ns5.foo.com", "ns6.foo.com", "ns7.foo.com", "ns8.foo.com", "ns9.foo.com", "ns10.foo.com", "ns11.foo.com", "ns12.foo.com", "ns13.foo.com"]
+          assert_raises Enom::InvalidNameServerCount do
+            @domain.update_nameservers(not_enough)
+          end
+          assert_raises Enom::InvalidNameServerCount do
+            @domain.update_nameservers(too_many)
+          end
+        end
       end
 
       should "have an expiration date" do
