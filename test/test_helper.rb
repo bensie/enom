@@ -327,6 +327,47 @@ class Test::Unit::TestCase
           <debug><![CDATA[]]></debug>
         </interface-response>
       EOF
+    },
+    {
+      :command => "GetAllDomains",
+      :request => "https://reseller.enom.com/interface.asp?Command=GetAllDomains&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF
+        <?xml version="1.0"?>
+        <interface-response>
+          <GetAllDomains>
+            <DomainDetail>
+              <DomainName>test1234567test1234567.com</DomainName>
+              <DomainNameID>340724808</DomainNameID>
+              <expiration-date>1/30/2012 5:23:00 PM</expiration-date>
+              <lockstatus>Locked</lockstatus>
+              <AutoRenew>No</AutoRenew>
+            </DomainDetail>
+            <DomainDetail>
+              <DomainName>test123456test123456.com</DomainName>
+              <DomainNameID>340724807</DomainNameID>
+              <expiration-date>1/30/2013 5:21:00 PM</expiration-date>
+              <lockstatus>Locked</lockstatus>
+              <AutoRenew>No</AutoRenew>
+            </DomainDetail>
+            <domaincount>2</domaincount>
+            <UserRequestStatus>DomainBox</UserRequestStatus>
+          </GetAllDomains>
+          <Command>GETALLDOMAINS</Command>
+          <Language>eng</Language>
+          <ErrCount>0</ErrCount>
+          <ResponseCount>0</ResponseCount>
+          <MinPeriod/>
+          <MaxPeriod>10</MaxPeriod>
+          <Server>RESELLERTEST</Server>
+          <Site>eNom</Site>
+          <IsLockable/>
+          <IsRealTimeTLD/>
+          <TimeDifference>+0.00</TimeDifference>
+          <ExecTime>0.156</ExecTime>
+          <Done>true</Done>
+          <debug><![CDATA[]]></debug>
+        </interface-response>
+      EOF
     }
   ]
 

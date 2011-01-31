@@ -9,6 +9,20 @@ class DomainTest < Test::Unit::TestCase
       Enom::Client.test = false
     end
 
+    context "listing all domains" do
+      setup do
+        @domains = Enom::Domain.all
+      end
+      should "return several domain objects" do
+        @domains.each do |domain|
+          assert_kind_of Enom::Domain, domain
+        end
+      end
+      should "return two domains" do
+        assert_equal 2, @domains.size
+      end
+    end
+
     context "checking for available domains" do
       should "return 'available' for an available domain" do
         assert_equal "available", Enom::Domain.check("test123456test123456.com")
