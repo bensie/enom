@@ -100,7 +100,7 @@ module Enom
 
     # Check if the domain is currently locked.  locked? helper method also available
     def locked
-      unless @locked
+      unless defined?(@locked)
         response = Client.request('Command' => 'GetRegLock', 'SLD' => sld, 'TLD' => tld)['interface_response']['reg_lock']
         @locked = response == '1'
       end
@@ -137,7 +137,7 @@ module Enom
     end
 
     def expiration_date
-      unless @expiration_date
+      unless defined?(@expiration_date)
         date_string = @domain_payload['interface_response']['GetDomainInfo']['status']['expiration']
         @expiration_date = Date.strptime(date_string.split(' ').first, "%m/%d/%Y")
       end

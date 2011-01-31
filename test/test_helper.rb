@@ -274,6 +274,32 @@ class Test::Unit::TestCase
           <debug><![CDATA[]]></debug>
         </interface-response>
       EOF
+    },
+    {
+      :command => "SetRegLock",
+      :request => "https://reseller.enom.com/interface.asp?Command=SetRegLock&SLD=test123456test123456&TLD=com&UnlockRegistrar=1&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF
+        <?xml version="1.0"?>
+        <interface-response>
+          <RegistrarLock>ACTIVE</RegistrarLock>
+          <RRPCodeSR>200</RRPCodeSR>
+          <RRPText>Command completed successfully</RRPText>
+          <Command>SETREGLOCK</Command>
+          <Language>eng</Language>
+          <ErrCount>0</ErrCount>
+          <ResponseCount>0</ResponseCount>
+          <MinPeriod>1</MinPeriod>
+          <MaxPeriod>10</MaxPeriod>
+          <Server>RESELLERTEST</Server>
+          <Site>eNom</Site>
+          <IsLockable>True</IsLockable>
+          <IsRealTimeTLD>True</IsRealTimeTLD>
+          <TimeDifference>+08.00</TimeDifference>
+          <ExecTime>1.016</ExecTime>
+          <Done>true</Done>
+          <debug><![CDATA[]]></debug>
+        </interface-response>
+      EOF
     }
   ]
 

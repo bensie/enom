@@ -73,6 +73,22 @@ class DomainTest < Test::Unit::TestCase
         ]
         assert_equal nameservers, @domain.nameservers
       end
+
+      should "have an expiration date" do
+        assert_kind_of Date, @domain.expiration_date
+        assert_equal "2012-01-30", @domain.expiration_date.strftime("%Y-%m-%d")
+      end
+
+      context "that is currently locked" do
+        setup do
+          @domain.unlock
+        end
+
+        should "unlock successfully" do
+          assert !@domain.locked?
+          assert @domain.unlocked?
+        end
+      end
     end
   end
 
