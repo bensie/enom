@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    enom (0.9.9)
+    enom (0.9.10)
       httparty (~> 0.7.3)
 
 GEM
