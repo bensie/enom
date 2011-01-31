@@ -1,15 +1,15 @@
 PATH
   remote: .
   specs:
-    enom (0.9.8)
-      httparty (~> 0.6.1)
+    enom (0.9.9)
+      httparty (~> 0.7.3)
 
 GEM
   remote: http://rubygems.org/
   specs:
     crack (0.1.8)
     fakeweb (1.3.0)
-    httparty (0.6.1)
+    httparty (0.7.3)
       crack (= 0.1.8)
     shoulda (2.11.3)
 
@@ -19,5 +19,4 @@ PLATFORMS
 DEPENDENCIES
   enom!
   fakeweb
-  httparty (~> 0.6.1)
   shoulda

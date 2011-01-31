@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "enom"
-  s.version = "0.9.9"
+  s.version = "0.9.10"
   s.authors = ["James Miller"]
   s.summary = %q{Ruby wrapper for the Enom API}
   s.description = %q{Enom is a Ruby wrapper and command line interface for portions of the Enom domain reseller API.}
@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.email = "bensie@gmail.com"
   s.files  = %w( README.rdoc Rakefile LICENSE ) + ["lib/enom.rb"] + Dir.glob("lib/enom/*.rb") + Dir.glob("lib/enom/commands/*.rb") + Dir.glob("test/**/*") + Dir.glob("bin/*")
   s.has_rdoc = false
-  s.add_dependency('httparty', '~> 0.6.1')
+  s.add_dependency('httparty', '~> 0.7.3')
   s.add_development_dependency('shoulda')
   s.add_development_dependency('fakeweb')
   s.executables = %w(enom)
