@@ -48,6 +48,11 @@ module Enom
       end
     end
 
+    # Boolean helper method to determine if the domain is available for purchase
+    def self.available?(name)
+      check(name) == "available"
+    end
+
     # Find and return all domains in the account
     def self.all(options = {})
       response = Client.request("Command" => "GetAllDomains")["interface_response"]["GetAllDomains"]["DomainDetail"]

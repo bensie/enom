@@ -26,9 +26,11 @@ class DomainTest < Test::Unit::TestCase
     context "checking for available domains" do
       should "return 'available' for an available domain" do
         assert_equal "available", Enom::Domain.check("test123456test123456.com")
+        assert Enom::Domain.available?("test123456test123456.com")
       end
       should "return 'unavailable' for an unavailable domain" do
         assert_equal "unavailable", Enom::Domain.check("google.com")
+        assert !Enom::Domain.available?("google.com")
       end
     end
 
