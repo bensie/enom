@@ -32,14 +32,6 @@ class CliTest < Test::Unit::TestCase
         assert_equal "Renewed test123456test123456.com", @cli.execute("renew", ["test123456test123456.com"])
       end
     end
-
-    # context "'describe'" do
-    #   should "show the domain information" do
-    #     assert_equal "...", @cli.execute("describe", ["test1234test1234.com"])
-    #   end
-    # end
-
-
   end
 
 end
