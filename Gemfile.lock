@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    enom (0.9.10)
+    enom (1.0.0)
       httparty (~> 0.7.3)
 
 GEM
@@ -9,7 +9,7 @@ GEM
   specs:
     crack (0.1.8)
     fakeweb (1.3.0)
-    httparty (0.7.3)
+    httparty (0.7.8)
       crack (= 0.1.8)
     shoulda (2.11.3)
 
