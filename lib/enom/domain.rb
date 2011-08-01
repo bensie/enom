@@ -49,9 +49,8 @@ module Enom
     end
 
     # Determine if domains are available for purchase
-    def self.check(values = {})
-      if values[:sld] && (values[:tld] || values[:tld_list])
-         sld = values[:sld]                # example
+    def self.check(sld, values)
+      if values[:tld] || values[:tld_list]
          tld = values[:tld]                # com, *, *1, *2, @
          tldlist = values[:tld_list]       #comma delimited list of TLDs to check
       else
