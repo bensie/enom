@@ -61,11 +61,11 @@ module Enom
         
       response = Client.request("Command" => "Check", "SLD" => sld, "TLD" => tld, "TLDList" => tldlist)
 
-      for n in 1..response["interface_response"]["DomainCount"]
-        if response["interface_response"]["RRPCode#{n}"] == "210"
-         result << "available"
+      for rrpcode in response["interface_response"]["RRPCode"]
+        if rrpcode  == "210"
+         result << true
         else
-         result << "unavailable"
+         result << false
       end
 
       return result
