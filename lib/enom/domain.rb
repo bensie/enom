@@ -48,6 +48,30 @@ module Enom
       end
     end
 
+    # Determine if the domain is available for purchase
+    def self.check(values = {})
+      if values[:sld] && (values[:tld] || values[:tld_list])
+         sld = values[:sld]
+         tld = values[:tld]
+         domainlist = values[:domain_list]
+         tldlist = values[:tld_list]
+         responsetype = values[:response_type]
+      else
+        return "error"
+      end
+        
+      response = Client.request("Command" => "Check", "SLD" => sld, "TLD" => tld, "DomainList" => domainlist, "TLDList" => tldlist, "ResponseType" => responsetype )
+
+      for n in 1..response["interface_response"]["DomainCount"]
+        if response["interface_response"]["RRPCode#{n}"] == "210"
+         result << "available"
+        else
+         result << "unavailable"
+      end
+
+      return result
+    end
+
     # Boolean helper method to determine if the domain is available for purchase
     def self.available?(name)
       check(name) == "available"
