@@ -49,7 +49,7 @@ module Enom
     end
 
     # Determine if domains are available for purchase
-    def self.check(sld, values)
+    def self.check_many(sld, values)
       tldlist = nil
       tld = nil
 
@@ -66,6 +66,7 @@ module Enom
          result << true
         else
          result << false
+         end
       end
 
       return result
