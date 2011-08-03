@@ -52,6 +52,7 @@ module Enom
     def self.check_many(sld, values)
       tldlist = nil
       tld = nil
+      result = []
 
       if values.kind_of?(Array)
          tldlist = values.join(",")       #array of TLDs to check
@@ -66,7 +67,7 @@ module Enom
          result << true
         else
          result << false
-         end
+        end
       end
 
       return result
@@ -103,6 +104,35 @@ module Enom
       response = Client.request({'Command' => 'Purchase', 'SLD' => sld, 'TLD' => tld}.merge(opts))
       Domain.find(name)
     end
+
+    #######
+    # Create an order to transfer domains from another registrar to eNom or one of its resellers
+    #
+    def self.transfer!(name, auth, options = {})
+      sld, tld = name.split('.')
+      opts = {
+      	"OrderType" => "AutoVerification",
+      	"DomainCount" => 1, #The number of domain names to be submitted on the order.
+        "SLD1" => sld,
+      	"TLD1" => tld,
+      	"AuthInfo1" => auth, #authorization key from the user
+      	"UseContacts" => 1   #transfer whois["ErrCount"]
+      }
+
+    	if options[:renew]
+    	  opts.merge!("Renew" => 1)
+    	end
+
+      response = Client.request({'Command' => 'TP_CreateOrder'}.merge(opts))["ErrCount"]
+
+      if response.to_i > 0
+         return false 
+      else
+         return true
+      end
+
+    end
+
 
     # Renew the domain
     def self.renew!(name, options = {})

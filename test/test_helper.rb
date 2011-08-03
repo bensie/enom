@@ -7,7 +7,7 @@ require File.expand_path('../../lib/enom',   __FILE__)
 
 class Test::Unit::TestCase
 
-  FakeWeb.allow_net_connect = false
+  FakeWeb.allow_net_connect = true
 
   commands = [
     {

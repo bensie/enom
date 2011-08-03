@@ -44,6 +44,16 @@ class DomainTest < Test::Unit::TestCase
       end
     end
 
+    context "transfer a domain" do
+      setup do
+        Enom::Client.test = true
+        @result = Enom::Domain.transfer!("resellerdocs2.net", "ros8enQi")
+      end
+      should "transfer the domain and return if everything went ok" do
+        assert_equal @result, true
+      end
+    end
+
     context "renewing a domain" do
       setup do
         @domain = Enom::Domain.renew!("test123456test123456.com")
