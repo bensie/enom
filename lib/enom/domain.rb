@@ -13,10 +13,10 @@ module Enom
     # Domain expiration date (currently returns a string - 11/9/2010 11:57:39 AM)
     attr_reader :expiration_date
     
-    attr_reader :com
-    attr_reader :net
-    attr_reader :tv
-    attr_reader :cc    
+    attr_accessor :com
+    attr_accessor :net
+    attr_accessor :tv
+    attr_accessor :cc    
 
 
     def initialize(attributes)
