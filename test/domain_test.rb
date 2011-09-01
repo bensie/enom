@@ -33,6 +33,16 @@ class DomainTest < Test::Unit::TestCase
         assert !Enom::Domain.available?("google.com")
       end
     end
+    
+    context "checking for suggested domains" do
+      setup do 
+        @suggestions = Enom::Domain.suggest("hand.com")
+      end
+      should "return a list of suggestions matching the supplied term" do
+        assert !@suggestions.empty?
+        assert @suggestions.detect {|domain| domain.name == 'handingok'}
+      end
+    end
 
     context "registering a domain" do
       setup do

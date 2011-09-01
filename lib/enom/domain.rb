@@ -12,6 +12,11 @@ module Enom
 
     # Domain expiration date (currently returns a string - 11/9/2010 11:57:39 AM)
     attr_reader :expiration_date
+    
+    attr_reader :com
+    attr_reader :net
+    attr_reader :tv
+    attr_reader :cc    
 
 
     def initialize(attributes)
@@ -87,6 +92,16 @@ module Enom
       opts.merge!('NumYears' => options[:years]) if options[:years]
       response = Client.request({'Command' => 'Extend', 'SLD' => sld, 'TLD' => tld}.merge(opts))
       Domain.find(name)
+    end
+    
+    def self.suggest(name, options ={})
+      puts name
+      sld, tld = name.split('.')
+      opts = {}
+      opts.merge!('MaxResults' => options[:years] || 8)
+      opts.merge!('Similar' => options[:similar] || 'High') 
+      response = Client.request({'Command' => 'namespinner', 'SLD' => sld, 'TLD' => tld}.merge(opts))   
+      extract_suggested_domains(response)
     end
 
     # Lock the domain at the registrar so it can't be transferred
@@ -183,5 +198,17 @@ module Enom
       return self
     end
 
+    def self.extract_suggested_domains(response)
+      response.parsed_response['interface_response']['namespin']['domains']['domain'].map do |domain|
+        Domain.new(
+          'DomainName' => domain['name'],
+          'expiration_date' => (Date.today + 100000).strftime('%m/%d/%Y'),
+          :com => domain['com'],
+          :net => domain['net'],
+          :tv => domain['tv'],
+          :cc => domain['cc']
+        )
+      end
+    end
   end
 end
