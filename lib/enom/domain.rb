@@ -103,7 +103,6 @@ module Enom
     end
     
     def self.suggest(name, options ={})
-      puts name
       sld, tld = name.split('.')
       opts = {}
       opts.merge!('MaxResults' => options[:years] || 8)
