@@ -13,10 +13,10 @@ module Enom
     # Domain expiration date (currently returns a string - 11/9/2010 11:57:39 AM)
     attr_reader :expiration_date
     
-    attr_accessor :com
-    attr_accessor :net
-    attr_accessor :tv
-    attr_accessor :cc    
+    attr_reader :com
+    attr_reader :net
+    attr_reader :tv
+    attr_reader :cc    
 
 
     def initialize(attributes)
@@ -26,6 +26,11 @@ module Enom
       else
         @sld, @tld = @name.split('.')
       end
+      
+      @com = attributes['com']
+      @tv = attributes['tv']
+      @cc = attributes['cc']
+      @net = attributes['net']                  
 
       expiration_date_string = attributes["expiration_date"] || attributes["status"]["expiration"]
       if expiration_date_string.nil?
@@ -207,14 +212,14 @@ module Enom
 
     def self.extract_suggested_domains(response)
       response.parsed_response['interface_response']['namespin']['domains']['domain'].map do |domain|
-        Domain.new(
+        d = Domain.new(
           'DomainName' => domain['name'],
           'expiration_date' => (Date.today + 100000).strftime('%m/%d/%Y'),
-          :com => domain['com'],
-          :net => domain['net'],
-          :tv => domain['tv'],
-          :cc => domain['cc']
-        )
+          'com' => domain['com'],
+          'net' => domain['net'],
+          'tv' => domain['tv'],
+          'cc' => domain['cc']
+        )        
       end
     end
   end

@@ -40,7 +40,9 @@ class DomainTest < Test::Unit::TestCase
       end
       should "return a list of suggestions matching the supplied term" do
         assert !@suggestions.empty?
-        assert @suggestions.detect {|domain| domain.name == 'handingok'}
+        handingok = @suggestions.detect {|domain| domain.name == 'handingok'}
+        assert handingok
+        assert handingok.tv == 'y'
       end
     end
 
