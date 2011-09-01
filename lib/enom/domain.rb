@@ -21,10 +21,18 @@ module Enom
 
     def initialize(attributes)
       @name = attributes["DomainName"] || attributes["domainname"]
-      @sld, @tld = @name.split('.')
+      if @name.nil?
+        raise 'You must supply a domainname'
+      else
+        @sld, @tld = @name.split('.')
+      end
 
       expiration_date_string = attributes["expiration_date"] || attributes["status"]["expiration"]
-      @expiration_date = Date.strptime(expiration_date_string.split(' ').first, "%m/%d/%Y")
+      if expiration_date_string.nil?
+        raise "You must supplied either an attributes['expiration_date'] || attributes['status']['expiration']"
+      else
+        @expiration_date = Date.strptime(expiration_date_string.split(' ').first, "%m/%d/%Y")
+      end
 
       # If we have more attributes for the domain from running GetDomainInfo
       # (as opposed to GetAllDomains), we should save it to the instance to
