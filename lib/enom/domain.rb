@@ -110,7 +110,7 @@ module Enom
     def self.suggest(name, options ={})
       sld, tld = name.split('.')
       opts = {}
-      opts.merge!('MaxResults' => options[:years] || 8)
+      opts.merge!('MaxResults' => options[:max_results] || 8)
       opts.merge!('Similar' => options[:similar] || 'High') 
       response = Client.request({'Command' => 'namespinner', 'SLD' => sld, 'TLD' => tld}.merge(opts))   
       extract_suggested_domains(response)
