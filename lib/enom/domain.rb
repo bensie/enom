@@ -192,6 +192,16 @@ module Enom
     def renew!(options = {})
       Domain.renew!(name, options)
     end
+    
+    def set_hosts!(hosts = []) 
+      std_opts = {'Command' => 'SetHosts', 'SLD' => self.sld, 'TLD' => self.tld}
+      hosts.each_with_index do |host, index|
+        std_opts.merge!({"Address#{index + 1}" => host, "HostName#{index + 1}" => self.name,  "RecordType#{index + 1}" => "A"})
+      end
+
+      done = Client.request(std_opts)["interface_response"]["Done"]      
+      done =~ /true/i
+    end
 
     private
 

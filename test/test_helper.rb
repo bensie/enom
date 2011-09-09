@@ -11,6 +11,26 @@ class Test::Unit::TestCase
 
   commands = [
     {
+      :command => "SetHosts",
+      :request => "https://reseller.enom.com/interface.asp?Command=SetHosts&SLD=test123456test123456&TLD=com&Address1=123.123.123.123&HostName1=test123456test123456.com&RecordType1=A&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF      
+        <?xml version="1.0" ?> 
+        <interface-response>
+          <DomainRRP>E</DomainRRP> 
+          <Command>SETHOSTS</Command> 
+          <ErrCount>0</ErrCount>
+          <Server>Dev Workstation</Server> 
+          <Site>enom</Site> 
+          <IsLockable>True</IsLockable> 
+          <IsRealTimeTLD>True</IsRealTimeTLD> 
+          <Done>true</Done>
+          <debug> 
+             <![CDATA[  ]]> 
+          </debug>
+        </interface-response>
+      EOF
+    },
+    {
       :command => "NameSpinner",
       :request => "https://reseller.enom.com/interface.asp?Command=namespinner&SLD=hand&TLD=com&MaxResults=8&Similar=High&UID=resellid&PW=resellpw&ResponseType=xml",
       :response => <<-EOF

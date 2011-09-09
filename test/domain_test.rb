@@ -55,6 +55,16 @@ class DomainTest < Test::Unit::TestCase
         assert_equal @domain.name, "test123456test123456.com"
       end
     end
+    
+    context "setting host records for a domain" do
+      setup do
+        @domain = Enom::Domain.find("test123456test123456.com")
+      end
+      should "set the host records to a specific host" do
+        assert_kind_of Enom::Domain, @domain
+        assert @domain.set_hosts!(['123.123.123.123'])
+      end
+    end    
 
     context "renewing a domain" do
       setup do
