@@ -12,14 +12,32 @@ module Enom
 
     # Domain expiration date (currently returns a string - 11/9/2010 11:57:39 AM)
     attr_reader :expiration_date
+    
+    attr_reader :com
+    attr_reader :net
+    attr_reader :tv
+    attr_reader :cc    
 
 
     def initialize(attributes)
       @name = attributes["DomainName"] || attributes["domainname"]
-      @sld, @tld = @name.split('.')
+      if @name.nil?
+        raise 'You must supply a domainname'
+      else
+        @sld, @tld = @name.split('.')
+      end
+      
+      @com = attributes['com']
+      @tv = attributes['tv']
+      @cc = attributes['cc']
+      @net = attributes['net']                  
 
       expiration_date_string = attributes["expiration_date"] || attributes["status"]["expiration"]
-      @expiration_date = Date.strptime(expiration_date_string.split(' ').first, "%m/%d/%Y")
+      if expiration_date_string.nil?
+        raise "You must supplied either an attributes['expiration_date'] || attributes['status']['expiration']"
+      else
+        @expiration_date = Date.strptime(expiration_date_string.split(' ').first, "%m/%d/%Y")
+      end
 
       # If we have more attributes for the domain from running GetDomainInfo
       # (as opposed to GetAllDomains), we should save it to the instance to
@@ -139,6 +157,15 @@ module Enom
       response = Client.request({'Command' => 'Extend', 'SLD' => sld, 'TLD' => tld}.merge(opts))
       Domain.find(name)
     end
+    
+    def self.suggest(name, options ={})
+      sld, tld = name.split('.')
+      opts = {}
+      opts.merge!('MaxResults' => options[:max_results] || 8)
+      opts.merge!('Similar' => options[:similar] || 'High') 
+      response = Client.request({'Command' => 'namespinner', 'SLD' => sld, 'TLD' => tld}.merge(opts))   
+      extract_suggested_domains(response)
+    end
 
     # Lock the domain at the registrar so it can't be transferred
     def lock
@@ -216,6 +243,16 @@ module Enom
     def renew!(options = {})
       Domain.renew!(name, options)
     end
+    
+    def set_hosts!(hosts = []) 
+      std_opts = {'Command' => 'SetHosts', 'SLD' => self.sld, 'TLD' => self.tld}
+      hosts.each_with_index do |host, index|
+        std_opts.merge!({"Address#{index + 1}" => host, "HostName#{index + 1}" => self.name,  "RecordType#{index + 1}" => "A"})
+      end
+
+      done = Client.request(std_opts)["interface_response"]["Done"]      
+      done =~ /true/i
+    end
 
     private
 
@@ -234,5 +271,17 @@ module Enom
       return self
     end
 
+    def self.extract_suggested_domains(response)
+      response.parsed_response['interface_response']['namespin']['domains']['domain'].map do |domain|
+        d = Domain.new(
+          'DomainName' => domain['name'],
+          'expiration_date' => (Date.today + 100000).strftime('%m/%d/%Y'),
+          'com' => domain['com'],
+          'net' => domain['net'],
+          'tv' => domain['tv'],
+          'cc' => domain['cc']
+        )        
+      end
+    end
   end
 end

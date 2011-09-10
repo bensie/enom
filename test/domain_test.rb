@@ -33,6 +33,18 @@ class DomainTest < Test::Unit::TestCase
         assert !Enom::Domain.available?("google.com")
       end
     end
+    
+    context "checking for suggested domains" do
+      setup do 
+        @suggestions = Enom::Domain.suggest("hand.com")
+      end
+      should "return a list of suggestions matching the supplied term" do
+        assert !@suggestions.empty?
+        handingok = @suggestions.detect {|domain| domain.name == 'handingok'}
+        assert handingok
+        assert handingok.tv == 'y'
+      end
+    end
 
     context "checking multiple TLDs for a single domain" do
       should "return an array of available domains with the provided TLD" do
@@ -66,6 +78,16 @@ class DomainTest < Test::Unit::TestCase
         assert_equal @domain.name, "test123456test123456.com"
       end
     end
+    
+    context "setting host records for a domain" do
+      setup do
+        @domain = Enom::Domain.find("test123456test123456.com")
+      end
+      should "set the host records to a specific host" do
+        assert_kind_of Enom::Domain, @domain
+        assert @domain.set_hosts!(['123.123.123.123'])
+      end
+    end    
 
     context "transfer a domain" do
       setup do
