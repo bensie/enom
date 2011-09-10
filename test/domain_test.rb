@@ -53,9 +53,7 @@ class DomainTest < Test::Unit::TestCase
           test123456test123456.ca
         )
         assert_equal wildcard_tld_domains, Enom::Domain.check_multiple_tlds("test123456test123456","*")
-        skip "Enom API is broken" do
-          assert_equal ["test123456test123456.us", "test123456test123456.ca", "test123456test123456.com"], Enom::Domain.check_multiple_tlds("test123456test123456", ["us", "ca", "com"])
-        end
+        #assert_equal ["test123456test123456.us", "test123456test123456.ca", "test123456test123456.com"], Enom::Domain.check_multiple_tlds("test123456test123456", ["us", "ca", "com"])
       end
     end
 
