@@ -62,9 +62,10 @@ module Enom
     def self.check_multiple_tlds(sld, tlds = "*")
       if tlds.kind_of?(Array)
         list = tlds.join(",")
+        tld  = nil
       elsif %w(* *1 *2 @).include?(tlds)
         list = nil
-        tld = tlds
+        tld  = tlds
       end
 
       response = Client.request("Command" => "Check", "SLD" => sld, "TLD" => tld, "TLDList" => list)
