@@ -34,6 +34,29 @@ class DomainTest < Test::Unit::TestCase
       end
     end
 
+    context "checking multiple TLDs for a single domain" do
+      should "return an array of available domains with the provided TLD" do
+        wildcard_tld_domains = %w(
+          test123456test123456.com
+          test123456test123456.net
+          test123456test123456.org
+          test123456test123456.info
+          test123456test123456.biz
+          test123456test123456.ws
+          test123456test123456.us
+          test123456test123456.cc
+          test123456test123456.tv
+          test123456test123456.bz
+          test123456test123456.nu
+          test123456test123456.mobi
+          test123456test123456.eu
+          test123456test123456.ca
+        )
+        assert_equal wildcard_tld_domains, Enom::Domain.check_multiple_tlds("test123456test123456","*")
+        assert_equal ["test123456test123456.us", "test123456test123456.ca", "test123456test123456.com"], Enom::Domain.check_multiple_tlds("test123456test123456", ["us", "ca", "com"])
+      end
+    end
+
     context "registering a domain" do
       setup do
         @domain = Enom::Domain.register!("test123456test123456.com")
@@ -41,6 +64,15 @@ class DomainTest < Test::Unit::TestCase
       should "register the domain and return a domain object" do
         assert_kind_of Enom::Domain, @domain
         assert_equal @domain.name, "test123456test123456.com"
+      end
+    end
+
+    context "transfer a domain" do
+      setup do
+        @result = Enom::Domain.transfer!("resellerdocs2.net", "ros8enQi")
+      end
+      should "transfer the domain and return true if successful" do
+        assert @result
       end
     end
 

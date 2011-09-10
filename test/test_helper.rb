@@ -95,6 +95,113 @@ class Test::Unit::TestCase
       EOF
     },
     {
+      :command => "Check Many with default (*) TLD list (Success)",
+      :request => "https://reseller.enom.com/interface.asp?Command=Check&SLD=test123456test123456&TLD=*&TLDList=&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF
+        <?xml version="1.0"?>
+        <interface-response>
+          <Domain1>test123456test123456.com</Domain1>
+          <RRPCode1>210</RRPCode1>
+          <RRPText1>Domain available</RRPText1>
+          <Domain2>test123456test123456.net</Domain2>
+          <RRPCode2>210</RRPCode2>
+          <RRPText2>Domain available</RRPText2>
+          <Domain3>test123456test123456.org</Domain3>
+          <RRPCode3>210</RRPCode3>
+          <RRPText3>Domain available</RRPText3>
+          <Domain4>test123456test123456.info</Domain4>
+          <RRPCode4>210</RRPCode4>
+          <RRPText4>Domain available</RRPText4>
+          <Domain5>test123456test123456.biz</Domain5>
+          <RRPCode5>210</RRPCode5>
+          <RRPText5>Domain available</RRPText5>
+          <Domain6>test123456test123456.ws</Domain6>
+          <RRPCode6>210</RRPCode6>
+          <RRPText6>Domain available</RRPText6>
+          <Domain7>test123456test123456.us</Domain7>
+          <RRPCode7>210</RRPCode7>
+          <RRPText7>Domain available</RRPText7>
+          <Domain8>test123456test123456.cc</Domain8>
+          <RRPCode8>210</RRPCode8>
+          <RRPText8>Domain available</RRPText8>
+          <Domain9>test123456test123456.tv</Domain9>
+          <PremiumName>
+            <IsPremiumName>False</IsPremiumName>
+            <PremiumPrice/>
+            <PremiumAboveThresholdPrice>False</PremiumAboveThresholdPrice>
+            <PremiumCategory>False</PremiumCategory>
+          </PremiumName>
+          <RRPCode9>210</RRPCode9>
+          <RRPText9>Domain available</RRPText9>
+          <Domain10>test123456test123456.bz</Domain10>
+          <RRPCode10>210</RRPCode10>
+          <RRPText10>Domain available</RRPText10>
+          <Domain11>test123456test123456.nu</Domain11>
+          <RRPCode11>210</RRPCode11>
+          <RRPText11>Domain available</RRPText11>
+          <Domain12>test123456test123456.mobi</Domain12>
+          <RRPCode12>210</RRPCode12>
+          <RRPText12>Domain available</RRPText12>
+          <Domain13>test123456test123456.eu</Domain13>
+          <RRPCode13>210</RRPCode13>
+          <RRPText13>Domain available</RRPText13>
+          <Domain14>test123456test123456.ca</Domain14>
+          <RRPCode14>210</RRPCode14>
+          <RRPText14>Domain available</RRPText14>
+          <DomainCount>14</DomainCount>
+          <Command>CHECK</Command>
+          <Language>eng</Language>
+          <ErrCount>0</ErrCount>
+          <ResponseCount>0</ResponseCount>
+          <MinPeriod>1</MinPeriod>
+          <MaxPeriod>10</MaxPeriod>
+          <Server>SJL01WRESELL15</Server>
+          <Site>eNom</Site>
+          <IsLockable>True</IsLockable>
+          <IsRealTimeTLD>True</IsRealTimeTLD>
+          <TimeDifference>+00.00</TimeDifference>
+          <ExecTime>2.156</ExecTime>
+          <Done>true</Done>
+          <debug><![CDATA[]]></debug>
+        </interface-response>
+      EOF
+    },
+    {
+      :command => "Check Many with custom array TLD list (Success)",
+      :request => "https://reseller.enom.com/interface.asp?Command=Check&SLD=test123456test123456&TLD=&TLDList=us%2Cca%2Ccom&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF
+        <?xml version="1.0"?>
+        <interface-response>
+          <Domain>test123456test123456.us</Domain>
+          <RRPCode>210</RRPCode>
+          <RRPText>Domain available</RRPText>
+          <Domain>test123456test123456.ca</Domain>
+          <RRPCode>210</RRPCode>
+          <RRPText>Domain available</RRPText>
+          <Domain>test123456test123456.com</Domain>
+          <RRPCode>210</RRPCode>
+          <RRPText>Domain available</RRPText>
+          <DomainCount>3</DomainCount>
+          <AuctionDate/>
+          <AuctionID/>
+          <Command>CHECK</Command>
+          <Language>eng</Language>
+          <ErrCount>0</ErrCount>
+          <ResponseCount>0</ResponseCount>
+          <MinPeriod/>
+          <MaxPeriod>10</MaxPeriod>
+          <Server>SJL01WRESELL06</Server>
+          <Site>eNom</Site>
+          <IsLockable/>
+          <IsRealTimeTLD/>
+          <TimeDifference>+0.00</TimeDifference>
+          <ExecTime>0.344</ExecTime>
+          <Done>true</Done>
+          <debug><![CDATA[]]></debug>
+        </interface-response>
+      EOF
+    },
+    {
       :command => "GetDomainInfo (Success)",
       :request => "https://reseller.enom.com/interface.asp?Command=GetDomainInfo&SLD=test123456test123456&TLD=com&UID=resellid&PW=resellpw&ResponseType=xml",
       :response => <<-EOF
@@ -325,6 +432,53 @@ class Test::Unit::TestCase
           <ExecTime>1.594</ExecTime>
           <Done>true</Done>
           <debug><![CDATA[]]></debug>
+        </interface-response>
+      EOF
+    },
+    {
+      :command => "Transfer domain",
+      :request => "https://reseller.enom.com/interface.asp?Command=TP_CreateOrder&OrderType=AutoVerification&DomainCount=1&SLD1=resellerdocs2&TLD1=net&AuthInfo1=ros8enQi&UseContacts=1&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF
+        <?xml version="1.0"?>
+        <interface-response>
+          <success>True</success>
+          <transferorder>
+          <transferorderid>175614452</transferorderid>
+          <orderdate>9/7/2011 10:59:21 AM</orderdate>
+          <ordertypeid>1</ordertypeid>
+          <ordertypedesc>Auto Verification</ordertypedesc>
+          <statusid>4</statusid>
+          <statusdesc>Processing</statusdesc>
+          <authamount>8.95</authamount>
+          <version>1</version>
+          <transferorderdetail>
+          <transferorderdetailid>77455163</transferorderdetailid>
+          <sld>resellerdocs2</sld>
+          <tld>net</tld>
+          <statusid>9</statusid>
+          <statusdesc>Awaiting auto verification of transfer request</statusdesc>
+          <price>8.95</price>
+          <usecontacts>1</usecontacts>
+          </transferorderdetail>
+          <transferorderdetailcount>1</transferorderdetailcount>
+          </transferorder>
+          <success>True</success>
+          <Command>TP_CREATEORDER</Command>
+          <Language>eng</Language>
+          <ErrCount>0</ErrCount>
+          <ResponseCount>0</ResponseCount>
+          <MinPeriod>1</MinPeriod>
+          <MaxPeriod>10</MaxPeriod>
+          <Server>SJL21WRESELLT01</Server>
+          <Site>eNom</Site>
+          <IsLockable>True</IsLockable>
+          <IsRealTimeTLD>True</IsRealTimeTLD>
+          <TimeDifference>+08.00</TimeDifference>
+          <ExecTime>0.563</ExecTime>
+          <Done>true</Done>
+          <debug>
+          <![CDATA[ ]]>
+          </debug>
         </interface-response>
       EOF
     },

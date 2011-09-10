@@ -38,19 +38,46 @@ module Enom
 
     # Determine if the domain is available for purchase
     def self.check(name)
-      sld, tld = name.split('.')
-      response = Client.request("Command" => "Check", "SLD" => sld, "TLD" => tld)["interface_response"]["RRPCode"]
-
-      if response == "210"
-        "available"
-      else
-        "unavailable"
-      end
+      available?(name) ? "available" : "unavailable"
     end
 
     # Boolean helper method to determine if the domain is available for purchase
     def self.available?(name)
-      check(name) == "available"
+      sld, tld = name.split('.')
+      response = Client.request("Command" => "Check", "SLD" => sld, "TLD" => tld)["interface_response"]["RRPCode"]
+      response == "210"
+    end
+
+    # Determine if a list of domains are available for purchase
+    # Returns an array of available domain names given
+
+    # Default TLD check lists
+    # *   com, net, org, info, biz, us, ws, cc, tv, bz, nu
+    # *1  com, net, org, info, biz, us, ws
+    # *2  com, net, org, info, biz, us
+    # @   com, net, org
+
+    # You can provide one of the default check lists or provide an array of strings
+    # to check a custom set of TLDs
+    def self.check_multiple_tlds(sld, tlds = "*")
+      if tlds.kind_of?(Array)
+        list = tlds.join(",")
+      elsif %w(* *1 *2 @).include?(tlds)
+        list = nil
+        tld = tlds
+      end
+
+      response = Client.request("Command" => "Check", "SLD" => sld, "TLD" => tld, "TLDList" => list)
+
+      result = []
+      response["interface_response"].each do |k, v|
+        if v == "210" #&& k[0,6] == "RRPCode"
+          pos = k[7..k.size]
+          result << response["interface_response"]["Domain#{pos}"] unless k.blank?
+        end
+      end
+
+      return result
     end
 
     # Find and return all domains in the account
@@ -79,6 +106,30 @@ module Enom
       response = Client.request({'Command' => 'Purchase', 'SLD' => sld, 'TLD' => tld}.merge(opts))
       Domain.find(name)
     end
+
+
+    # Transfer domain from another registrar to Enom, charges the account when successful
+    # Returns true if successful, false if failed
+    def self.transfer!(name, auth, options = {})
+      sld, tld = name.split('.')
+
+      # Default options
+      opts = {
+        "OrderType"   => "AutoVerification",
+        "DomainCount" => 1,
+        "SLD1"        => sld,
+        "TLD1"        => tld,
+        "AuthInfo1"   => auth, # Authorization (EPP) key from the
+        "UseContacts" => 1     # Set UseContacts=1 to transfer existing Whois contacts with a domain that does not require extended attributes.
+      }
+
+      opts.merge!("Renew" => 1) if options[:renew]
+
+      response = Client.request({'Command' => 'TP_CreateOrder'}.merge(opts))["ErrCount"]
+
+      response.to_i == 0
+    end
+
 
     # Renew the domain
     def self.renew!(name, options = {})
