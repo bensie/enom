@@ -36,21 +36,60 @@ module Enom
       Domain.new(response)
     end
 
+
     # Determine if the domain is available for purchase
     def self.check(name)
-      sld, tld = name.split('.')
-      response = Client.request("Command" => "Check", "SLD" => sld, "TLD" => tld)["interface_response"]["RRPCode"]
-
-      if response == "210"
+      if available?(name)
         "available"
       else
         "unavailable"
       end
     end
 
+
+    # Determine if a list of domains are available for purchase
+    # Returns an array of available domain names
+    # NOTE: there is a bug with arrays... Use only defaults until enom fixes XML result
+    def self.check_many(sld, tldvalue)
+      tldlist = nil
+      tld = nil
+      result = []
+
+      if tldvalue.kind_of?(Array)
+         tldlist = tldvalue.join(",")       # array of TLDs to check (ex: ['us','ca','com'] )
+      else
+         tld = tldvalue                     # default lists 
+                                            # *   returns: com, net, org, info, biz, us, ws, cc, tv, bz, nu 
+                                            # *1  returns: com, net, org, info, biz, us, ws 
+                                            # *2  returns: com, net, org, info, biz, us 
+                                            # @   returns: com, net, org 
+      end
+
+
+      response = Client.request("Command" => "Check", "SLD" => sld, "TLD" => tld, "TLDList" => tldlist)
+
+      response["interface_response"].each do | k, v|
+        
+        if v == "210" #&& k[0,6] == "RRPCode"
+          pos = k[7..k.size]
+         result << response["interface_response"]["Domain#{pos}"] unless k.blank?
+        end
+      end
+
+      return result
+    end
+
+
     # Boolean helper method to determine if the domain is available for purchase
     def self.available?(name)
-      check(name) == "available"
+      sld, tld = name.split('.')
+      response = Client.request("Command" => "Check", "SLD" => sld, "TLD" => tld)["interface_response"]["RRPCode"]
+
+      if response == "210"
+        true
+      else
+        false
+      end
     end
 
     # Find and return all domains in the account
@@ -79,6 +118,36 @@ module Enom
       response = Client.request({'Command' => 'Purchase', 'SLD' => sld, 'TLD' => tld}.merge(opts))
       Domain.find(name)
     end
+
+
+    # Create an order to transfer domains from another registrar to eNom or one of its resellers
+    def self.transfer!(name, auth, options = {})  
+      sld, tld = name.split('.')
+      
+      #Default options
+      opts = {
+      	"OrderType" => "AutoVerification",
+      	"DomainCount" => 1, #The number of domain names to be submitted on the order.
+        "SLD1" => sld,
+      	"TLD1" => tld,
+      	"AuthInfo1" => auth, #authorization key from the user
+      	"UseContacts" => 1   #Set UseContacts=1 to transfer existing Whois contacts with a domain that does not require extended attributes.
+      }
+
+    	if options[:renew]
+    	  opts.merge!("Renew" => 1)
+    	end
+
+      response = Client.request({'Command' => 'TP_CreateOrder'}.merge(opts))["ErrCount"]
+
+      if response.to_i > 0
+         return false 
+      else
+         return true
+      end
+
+    end
+
 
     # Renew the domain
     def self.renew!(name, options = {})

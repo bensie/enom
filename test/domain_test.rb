@@ -34,6 +34,13 @@ class DomainTest < Test::Unit::TestCase
       end
     end
 
+    context "checking many domains" do
+
+      should "return 'available' for many available domain" do
+        assert_equal ["test123456test123456.us","test123456test123456.ca"], Enom::Domain.check_many("test123456test123456","*")
+      end
+    end
+    
     context "registering a domain" do
       setup do
         @domain = Enom::Domain.register!("test123456test123456.com")
@@ -41,6 +48,15 @@ class DomainTest < Test::Unit::TestCase
       should "register the domain and return a domain object" do
         assert_kind_of Enom::Domain, @domain
         assert_equal @domain.name, "test123456test123456.com"
+      end
+    end
+
+    context "transfer a domain" do
+      setup do
+        @result = Enom::Domain.transfer!("resellerdocs2.net", "ros8enQi")
+      end
+      should "transfer the domain and return if everything went ok" do
+        assert_equal @result, true
       end
     end
 
