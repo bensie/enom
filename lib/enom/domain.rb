@@ -150,7 +150,7 @@ module Enom
       response = Client.request({'Command' => 'namespinner', 'SLD' => sld, 'TLD' => tld}.merge(opts))
 
       suggestions = []
-      response.parsed_response['interface_response']['namespin']['domains']['domain'].map do |d|
+      response['interface_response']['namespin']['domains']['domain'].map do |d|
         %w(com net tv cc).each do |toplevel|
           suggestions << [d['name'].downcase, toplevel].join(".") if d[toplevel] == "y"
         end
