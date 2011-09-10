@@ -52,7 +52,7 @@ class DomainTest < Test::Unit::TestCase
           test123456test123456.eu
           test123456test123456.ca
         )
-        assert_equal wildcard_tld_domains, Enom::Domain.check_multiple_tlds("test123456test123456","*")
+        assert_equal wildcard_tld_domains.sort, Enom::Domain.check_multiple_tlds("test123456test123456","*").sort
         #assert_equal ["test123456test123456.us", "test123456test123456.ca", "test123456test123456.com"], Enom::Domain.check_multiple_tlds("test123456test123456", ["us", "ca", "com"])
       end
     end
