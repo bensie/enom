@@ -58,11 +58,13 @@ module Enom
     # @   com, net, org
 
     # You can provide one of the default check lists or provide an array of strings
-    # to check a custom set of TLDs
+    # to check a custom set of TLDs. Enom currently chokes when specifying a custom
+    # list, so this will raise a NotImplementedError until Enom fixes this
     def self.check_multiple_tlds(sld, tlds = "*")
       if tlds.kind_of?(Array)
-        list = tlds.join(",")
-        tld  = nil
+        # list = tlds.join(",")
+        # tld  = nil
+        raise NotImplementedError
       elsif %w(* *1 *2 @).include?(tlds)
         list = nil
         tld  = tlds
