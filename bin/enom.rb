@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 
-$:.unshift(File.dirname(__FILE__) + '/../lib')
-require 'enom'
-require 'enom/cli'
+$:.unshift(File.dirname(__FILE__) + "/../lib")
+require "enom"
+require "enom/cli"
 
-require 'optparse'
+require "optparse"
 
 def usage
   $stderr.puts <<-EOF
@@ -60,7 +60,7 @@ end
 global.order!
 command = ARGV.shift
 
-if command.nil? || command == 'help'
+if command.nil? || command == "help"
   usage
 else
   begin

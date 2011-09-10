@@ -25,7 +25,7 @@ module Enom
       # ...
       # end
       define_method "#{contact_type.downcase}_contact_info" do
-        Client.request('Command' => 'GetContacts', 'SLD' => sld, 'TLD' => tld)["interface_response"]["GetContacts"][contact_type]
+        Client.request("Command" => "GetContacts", "SLD" => sld, "TLD" => tld)["interface_response"]["GetContacts"][contact_type]
       end
 
       # Define setter methods for each contact type
@@ -34,7 +34,7 @@ module Enom
       # end
       define_method "update_#{contact_type.downcase}_contact_info" do |contact_data|
 
-        # Remove attributes that are not in Enom's list of available fields
+        # Remove attributes that are not in Enom"s list of available fields
         contact_data.select!{|k| FIELDS.map{|f| f[:name] }.include?(k)}
 
         # Write the initial options hash containing the current ContactType
@@ -55,14 +55,14 @@ module Enom
         end
 
         # Send the new contact details to Enom
-        Client.request({'Command' => 'Contacts', 'SLD' => sld, 'TLD' => tld}.merge(opts))
+        Client.request({"Command" => "Contacts", "SLD" => sld, "TLD" => tld}.merge(opts))
 
         # Fetch the new contact info and return it
         send("#{contact_type.downcase}_contact_info")
       end
 
       def all_contact_info
-        Client.request('Command' => 'GetContacts', 'SLD' => sld, 'TLD' => tld)["interface_response"]["GetContacts"].select{|k| CONTACT_TYPES.include?(k)}
+        Client.request("Command" => "GetContacts", "SLD" => sld, "TLD" => tld)["interface_response"]["GetContacts"].select{|k| CONTACT_TYPES.include?(k)}
       end
 
       # Update all contact types with the same data

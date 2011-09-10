@@ -16,10 +16,10 @@ module Enom
 
     def initialize(attributes)
       @name = attributes["DomainName"] || attributes["domainname"]
-      @sld, @tld = @name.split('.')
+      @sld, @tld = @name.split(".")
 
       expiration_date_string = attributes["expiration_date"] || attributes["status"]["expiration"]
-      @expiration_date = Date.strptime(expiration_date_string.split(' ').first, "%m/%d/%Y")
+      @expiration_date = Date.strptime(expiration_date_string.split(" ").first, "%m/%d/%Y")
 
       # If we have more attributes for the domain from running GetDomainInfo
       # (as opposed to GetAllDomains), we should save it to the instance to
@@ -31,8 +31,8 @@ module Enom
 
     # Find the domain (must be in your account) on Enom
     def self.find(name)
-      sld, tld = name.split('.')
-      response = Client.request('Command' => 'GetDomainInfo', 'SLD' => sld, 'TLD' => tld)["interface_response"]["GetDomainInfo"]
+      sld, tld = name.split(".")
+      response = Client.request("Command" => "GetDomainInfo", "SLD" => sld, "TLD" => tld)["interface_response"]["GetDomainInfo"]
       Domain.new(response)
     end
 
@@ -43,7 +43,7 @@ module Enom
 
     # Boolean helper method to determine if the domain is available for purchase
     def self.available?(name)
-      sld, tld = name.split('.')
+      sld, tld = name.split(".")
       response = Client.request("Command" => "Check", "SLD" => sld, "TLD" => tld)["interface_response"]["RRPCode"]
       response == "210"
     end
@@ -92,7 +92,7 @@ module Enom
 
     # Purchase the domain
     def self.register!(name, options = {})
-      sld, tld = name.split('.')
+      sld, tld = name.split(".")
       opts = {}
       if options[:nameservers]
         count = 1
@@ -103,8 +103,8 @@ module Enom
       else
         opts.merge!("UseDNS" => "default")
       end
-      opts.merge!('NumYears' => options[:years]) if options[:years]
-      response = Client.request({'Command' => 'Purchase', 'SLD' => sld, 'TLD' => tld}.merge(opts))
+      opts.merge!("NumYears" => options[:years]) if options[:years]
+      response = Client.request({"Command" => "Purchase", "SLD" => sld, "TLD" => tld}.merge(opts))
       Domain.find(name)
     end
 
@@ -112,7 +112,7 @@ module Enom
     # Transfer domain from another registrar to Enom, charges the account when successful
     # Returns true if successful, false if failed
     def self.transfer!(name, auth, options = {})
-      sld, tld = name.split('.')
+      sld, tld = name.split(".")
 
       # Default options
       opts = {
@@ -126,7 +126,7 @@ module Enom
 
       opts.merge!("Renew" => 1) if options[:renew]
 
-      response = Client.request({'Command' => 'TP_CreateOrder'}.merge(opts))["ErrCount"]
+      response = Client.request({"Command" => "TP_CreateOrder"}.merge(opts))["ErrCount"]
 
       response.to_i == 0
     end
@@ -134,40 +134,40 @@ module Enom
 
     # Renew the domain
     def self.renew!(name, options = {})
-      sld, tld = name.split('.')
+      sld, tld = name.split(".")
       opts = {}
-      opts.merge!('NumYears' => options[:years]) if options[:years]
-      response = Client.request({'Command' => 'Extend', 'SLD' => sld, 'TLD' => tld}.merge(opts))
+      opts.merge!("NumYears" => options[:years]) if options[:years]
+      response = Client.request({"Command" => "Extend", "SLD" => sld, "TLD" => tld}.merge(opts))
       Domain.find(name)
     end
 
     # Suggest available domains using the namespinner
     # Returns an array of available domain names that match
     def self.suggest(name, options ={})
-      sld, tld = name.split('.')
+      sld, tld = name.split(".")
       opts = {}
-      opts.merge!('MaxResults' => options[:max_results] || 8, 'Similar' => options[:similar] || 'High')
-      response = Client.request({'Command' => 'namespinner', 'SLD' => sld, 'TLD' => tld}.merge(opts))
+      opts.merge!("MaxResults" => options[:max_results] || 8, "Similar" => options[:similar] || "High")
+      response = Client.request({"Command" => "namespinner", "SLD" => sld, "TLD" => tld}.merge(opts))
 
       suggestions = []
-      response['interface_response']['namespin']['domains']['domain'].map do |d|
+      response["interface_response"]["namespin"]["domains"]["domain"].map do |d|
         %w(com net tv cc).each do |toplevel|
-          suggestions << [d['name'].downcase, toplevel].join(".") if d[toplevel] == "y"
+          suggestions << [d["name"].downcase, toplevel].join(".") if d[toplevel] == "y"
         end
       end
       return suggestions
     end
 
-    # Lock the domain at the registrar so it can't be transferred
+    # Lock the domain at the registrar so it can"t be transferred
     def lock
-      Client.request('Command' => 'SetRegLock', 'SLD' => sld, 'TLD' => tld, 'UnlockRegistrar' => '0')
+      Client.request("Command" => "SetRegLock", "SLD" => sld, "TLD" => tld, "UnlockRegistrar" => "0")
       @locked = true
       return self
     end
 
     # Unlock the domain at the registrar to permit transfers
     def unlock
-      Client.request('Command' => 'SetRegLock', 'SLD' => sld, 'TLD' => tld, 'UnlockRegistrar' => '1')
+      Client.request("Command" => "SetRegLock", "SLD" => sld, "TLD" => tld, "UnlockRegistrar" => "1")
       @locked = false
       return self
     end
@@ -175,8 +175,8 @@ module Enom
     # Check if the domain is currently locked.  locked? helper method also available
     def locked
       unless defined?(@locked)
-        response = Client.request('Command' => 'GetRegLock', 'SLD' => sld, 'TLD' => tld)['interface_response']['reg_lock']
-        @locked = response == '1'
+        response = Client.request("Command" => "GetRegLock", "SLD" => sld, "TLD" => tld)["interface_response"]["reg_lock"]
+        @locked = response == "1"
       end
       return @locked
     end
@@ -202,7 +202,7 @@ module Enom
           ns.merge!("NS#{count}" => nameserver)
           count += 1
         end
-        Client.request({'Command' => 'ModifyNS', 'SLD' => sld, 'TLD' => tld}.merge(ns))
+        Client.request({"Command" => "ModifyNS", "SLD" => sld, "TLD" => tld}.merge(ns))
         @nameservers = ns.values
         return self
       else
@@ -212,8 +212,8 @@ module Enom
 
     def expiration_date
       unless defined?(@expiration_date)
-        date_string = @domain_payload['interface_response']['GetDomainInfo']['status']['expiration']
-        @expiration_date = Date.strptime(date_string.split(' ').first, "%m/%d/%Y")
+        date_string = @domain_payload["interface_response"]["GetDomainInfo"]["status"]["expiration"]
+        @expiration_date = Date.strptime(date_string.split(" ").first, "%m/%d/%Y")
       end
       @expiration_date
     end
@@ -240,15 +240,15 @@ module Enom
     # Make another API call to get all domain info. Often necessary when domains are
     # found using Domain.all instead of Domain.find.
     def get_extended_domain_attributes
-      sld, tld = name.split('.')
-      attributes = Client.request('Command' => 'GetDomainInfo', 'SLD' => sld, 'TLD' => tld)["interface_response"]["GetDomainInfo"]
+      sld, tld = name.split(".")
+      attributes = Client.request("Command" => "GetDomainInfo", "SLD" => sld, "TLD" => tld)["interface_response"]["GetDomainInfo"]
       set_extended_domain_attributes(attributes)
     end
 
     # Set any more attributes that we have to work with to instance variables
     def set_extended_domain_attributes(attributes)
-      @nameservers = attributes['services']['entry'].first['configuration']['dns']
-      @registration_status = attributes['status']['registrationstatus']
+      @nameservers = attributes["services"]["entry"].first["configuration"]["dns"]
+      @registration_status = attributes["status"]["registrationstatus"]
       return self
     end
 

@@ -1,5 +1,5 @@
-require 'test_helper'
-require File.expand_path('../../lib/enom/cli',   __FILE__)
+require "test_helper"
+require File.expand_path("../../lib/enom/cli",   __FILE__)
 
 class CliTest < Test::Unit::TestCase
 

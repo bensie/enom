@@ -1,9 +1,9 @@
-require 'rubygems'
-require 'test/unit'
-require 'shoulda'
-require 'fakeweb'
+require "rubygems"
+require "test/unit"
+require "shoulda"
+require "fakeweb"
 
-require File.expand_path('../../lib/enom',   __FILE__)
+require File.expand_path("../../lib/enom",   __FILE__)
 
 class Test::Unit::TestCase
 
