@@ -35,9 +35,10 @@ help                                    # Show this usage
 
 list                                    # List all domains
 check domain.com                        # Check if a domain is available (for registration)
-describe domain.com                     # Describe the given domain
-register domain.com                     # Register the given domain with Enom
-renew domain.com                        # Renew the given domain with Enom
+describe domain.com                     # Describe a domain
+register domain.com                     # Register a domain with Enom
+renew domain.com                        # Renew a domain with Enom
+transfer domain.com 867e5926e93         # Transfer a domain to Enom (requires auth/EPP code)
 
 EOF
 end

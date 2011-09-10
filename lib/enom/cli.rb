@@ -38,7 +38,8 @@ module Enom
         'check'    => Enom::Commands::CheckDomain,
         'register' => Enom::Commands::RegisterDomain,
         'renew'    => Enom::Commands::RenewDomain,
-        'describe' => Enom::Commands::DescribeDomain
+        'describe' => Enom::Commands::DescribeDomain,
+        'transfer' => Enom::Commands::TransferDomain
       }
     end
 
@@ -49,3 +50,4 @@ require 'enom/commands/check_domain'
 require 'enom/commands/register_domain'
 require 'enom/commands/renew_domain'
 require 'enom/commands/describe_domain'
+require 'enom/commands/transfer_domain'
