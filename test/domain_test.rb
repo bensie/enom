@@ -57,6 +57,43 @@ class DomainTest < Test::Unit::TestCase
       end
     end
 
+    context "checking for suggested domains" do
+      setup do
+        @suggestions = Enom::Domain.suggest("hand.com")
+      end
+      should "return an array of suggestions matching the supplied term" do
+        assert !@suggestions.empty?
+        suggestions = %w(
+          handsewncurtains.net
+          handsewncurtains.tv
+          handsewncurtains.cc
+          handicappingclub.net
+          handicappingclub.tv
+          handicappingclub.cc
+          handingok.com
+          handingok.net
+          handingok.tv
+          handingok.cc
+          handsofjustice.tv
+          handsofjustice.cc
+          handoki.net
+          handoki.tv
+          handoki.cc
+          handinghand.com
+          handinghand.net
+          handinghand.tv
+          handinghand.cc
+          handcrafthouselogs.com
+          handcrafthouselogs.net
+          handcrafthouselogs.tv
+          handcrafthouselogs.cc
+          handloser.tv
+          handloser.cc
+        )
+        assert_equal suggestions, @suggestions
+      end
+    end
+
     context "registering a domain" do
       setup do
         @domain = Enom::Domain.register!("test123456test123456.com")

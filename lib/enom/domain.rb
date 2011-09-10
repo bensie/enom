@@ -141,6 +141,23 @@ module Enom
       Domain.find(name)
     end
 
+    # Suggest available domains using the namespinner
+    # Returns an array of available domain names that match
+    def self.suggest(name, options ={})
+      sld, tld = name.split('.')
+      opts = {}
+      opts.merge!('MaxResults' => options[:max_results] || 8, 'Similar' => options[:similar] || 'High')
+      response = Client.request({'Command' => 'namespinner', 'SLD' => sld, 'TLD' => tld}.merge(opts))
+
+      suggestions = []
+      response.parsed_response['interface_response']['namespin']['domains']['domain'].map do |d|
+        %w(com net tv cc).each do |toplevel|
+          suggestions << [d['name'].downcase, toplevel].join(".") if d[toplevel] == "y"
+        end
+      end
+      return suggestions
+    end
+
     # Lock the domain at the registrar so it can't be transferred
     def lock
       Client.request('Command' => 'SetRegLock', 'SLD' => sld, 'TLD' => tld, 'UnlockRegistrar' => '0')

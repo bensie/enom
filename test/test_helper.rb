@@ -522,6 +522,46 @@ class Test::Unit::TestCase
           <debug><![CDATA[]]></debug>
         </interface-response>
       EOF
+    },
+    {
+      :command => "NameSpinner",
+      :request => "https://reseller.enom.com/interface.asp?Command=namespinner&SLD=hand&TLD=com&MaxResults=8&Similar=High&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF
+        <?xml version="1.0"?>
+        <interface-response>
+           <namespin>
+              <spincount>8</spincount>
+              <TLDList />
+              <domains>
+                 <domain name="Handsewncurtains" com="n" comscore="835" net="y" netscore="864" tv="y" tvscore="797" cc="y" ccscore="762" />
+                 <domain name="Handicappingclub" com="n" comscore="821" net="y" netscore="851" tv="y" tvscore="784" cc="y" ccscore="749" />
+                 <domain name="Handingok" com="y" comscore="837" net="y" netscore="810" tv="y" tvscore="783" cc="y" ccscore="757" />
+                 <domain name="Handsofjustice" com="n" comscore="870" net="n" netscore="844" tv="y" tvscore="834" cc="y" ccscore="799" />
+                 <domain name="Handoki" com="n" comscore="794" net="y" netscore="824" tv="y" tvscore="757" cc="y" ccscore="722" />
+                 <domain name="Handinghand" com="y" comscore="820" net="y" netscore="793" tv="y" tvscore="767" cc="y" ccscore="740" />
+                 <domain name="Handcrafthouselogs" com="y" comscore="810" net="y" netscore="783" tv="y" tvscore="757" cc="y" ccscore="730" />
+                 <domain name="Handloser" com="n" comscore="844" net="n" netscore="817" tv="y" tvscore="807" cc="y" ccscore="773" />
+              </domains>
+           </namespin>
+           <originalsld>hand</originalsld>
+           <Command>NAMESPINNER</Command>
+           <Language>eng</Language>
+           <ErrCount>0</ErrCount>
+           <ResponseCount>0</ResponseCount>
+           <MinPeriod>1</MinPeriod>
+           <MaxPeriod>10</MaxPeriod>
+           <Server>RESELLER1-STG</Server>
+           <Site>enom</Site>
+           <IsLockable>True</IsLockable>
+           <IsRealTimeTLD>True</IsRealTimeTLD>
+           <TimeDifference>+03.00</TimeDifference>
+           <ExecTime>0.719</ExecTime>
+           <Done>true</Done>
+           <debug>
+              <![CDATA[  ]]>
+           </debug>
+        </interface-response>
+      EOF
     }
   ]
 
