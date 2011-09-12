@@ -150,10 +150,10 @@ module Enom
       opts = {}
       opts.merge!("MaxResults" => options[:max_results] || 8, "Similar" => options[:similar] || "High")
       response = Client.request({"Command" => "namespinner", "SLD" => sld, "TLD" => tld}.merge(opts))
-
+      
       suggestions = []
       response["interface_response"]["namespin"]["domains"]["domain"].map do |d|
-        %w(com net tv cc).each do |toplevel|
+        (options[:tlds] || %w(com net tv cc)).each do |toplevel|
           suggestions << [d["name"].downcase, toplevel].join(".") if d[toplevel] == "y"
         end
       end
