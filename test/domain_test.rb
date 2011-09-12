@@ -59,11 +59,13 @@ class DomainTest < Test::Unit::TestCase
 
     context "checking for suggested domains" do
       setup do
-        @suggestions = Enom::Domain.suggest("hand.com")
+
       end
       should "return an array of suggestions matching the supplied term" do
+        @suggestions = Enom::Domain.suggest("hand.com")
         assert !@suggestions.empty?
-        suggestions = %w(
+        
+        results = %w(
           handsewncurtains.net
           handsewncurtains.tv
           handsewncurtains.cc
@@ -90,7 +92,27 @@ class DomainTest < Test::Unit::TestCase
           handloser.tv
           handloser.cc
         )
-        assert_equal suggestions, @suggestions
+
+        assert_equal results, @suggestions
+      end
+      
+      should "only return the results matching specified tlds" do 
+        @suggestions = Enom::Domain.suggest("hand.com", :tlds => %w(com net))
+        assert !@suggestions.empty?
+        
+        results = %w(
+          handsewncurtains.net
+          handicappingclub.net
+          handingok.com
+          handingok.net
+          handoki.net
+          handinghand.com
+          handinghand.net
+          handcrafthouselogs.com
+          handcrafthouselogs.net
+        )
+
+        assert_equal results, @suggestions
       end
     end
 
