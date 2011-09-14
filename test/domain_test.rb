@@ -125,6 +125,30 @@ class DomainTest < Test::Unit::TestCase
         assert_equal @domain.name, "test123456test123456.com"
       end
     end
+    
+    context "setting host records for a domain" do
+      setup do
+        @domain = Enom::Domain.find("test123456test123456.com")
+      end
+      should "set the host records to a specific host" do
+        assert_kind_of Enom::Domain, @domain
+        assert @domain.set_hosts(['123.123.123.123'])
+      end
+	  
+	    should "set the host records to a specific host including the www. subdomain" do
+        assert_kind_of Enom::Domain, @domain
+        assert @domain.set_hosts(['123.123.123.123'], true)
+      end
+    end    
+
+    context "transfer a domain" do
+      setup do
+        @result = Enom::Domain.transfer!("resellerdocs2.net", "ros8enQi")
+      end
+      should "transfer the domain and return true if successful" do
+        assert @result
+      end
+    end
 
     context "transfer a domain" do
       setup do
