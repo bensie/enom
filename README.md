@@ -45,9 +45,19 @@ Enom::Domain.check("google.com")
 Enom::Domain.available?("example.com")
 # => true
 
+# Use enom's "NameSpinner" to suggest a domain
+domains = Enom::Domain.suggest("Google.com")
+brogoogle.com
+brogoogle.net
+...
+
 # Register a domain
 d = Enom::Domain.register!("example.com")
 # => #<Enom::Domain:0x1019f3b78...
+
+# Now set host records (A records only at the moment)
+d.set_hosts(['123.123.123.123'])
+# => true
 ```
 
 ## Domain Operations
