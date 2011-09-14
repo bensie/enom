@@ -132,12 +132,12 @@ class DomainTest < Test::Unit::TestCase
       end
       should "set the host records to a specific host" do
         assert_kind_of Enom::Domain, @domain
-        assert @domain.set_hosts!(['123.123.123.123'])
+        assert @domain.set_hosts(['123.123.123.123'])
       end
 	  
 	  should "set the host records to a specific host including the www. subdomain" do
         assert_kind_of Enom::Domain, @domain
-        assert @domain.set_hosts!(['123.123.123.123'], true)
+        assert @domain.set_hosts(['123.123.123.123'], true)
       end
     end    
 

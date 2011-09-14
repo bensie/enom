@@ -237,7 +237,7 @@ module Enom
       Domain.renew!(name, options)
     end
     
-    def set_hosts!(hosts, include_www = false) 
+    def set_hosts(hosts, include_www = false) 
       std_opts = {'Command' => 'SetHosts', 'SLD' => self.sld, 'TLD' => self.tld}
       hosts.each_with_index do |host, index|
         std_opts.merge!({"Address#{index + 1}" => host, "HostName#{index + 1}" => self.name,  "RecordType#{index + 1}" => "A"})
