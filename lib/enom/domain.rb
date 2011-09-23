@@ -240,7 +240,7 @@ module Enom
     def set_hosts(hosts, include_www = false) 
       std_opts = {'Command' => 'SetHosts', 'SLD' => self.sld, 'TLD' => self.tld}
       hosts.each_with_index do |host, index|
-        std_opts.merge!({"Address#{index + 1}" => host, "HostName#{index + 1}" => self.name,  "RecordType#{index + 1}" => "A"})
+        std_opts.merge!({"Address#{index + 1}" => host, "HostName#{index + 1}" => "@",  "RecordType#{index + 1}" => "A"})
         if include_www
           std_opts.merge!({"Address#{index + hosts.size + 1}" => "hosting.realpractice.com", "HostName#{index + hosts.size + 1}" => "www",  "RecordType#{index + hosts.size + 1}" => "CNAME"})
           std_opts.merge!({"Address#{index + (hosts.size * 2) + 1}" => "hosting.realpractice.com", "HostName#{index + (hosts.size * 2) + 1}" => "*",  "RecordType#{index + (hosts.size * 2) + 1}" => "CNAME"})                  

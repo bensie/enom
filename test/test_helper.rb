@@ -565,8 +565,7 @@ class Test::Unit::TestCase
     },
 	  {
       :command => "SetHosts (single)",
-      :request => "https://reseller.enom.com/interface.asp?Command=SetHosts&SLD=test123456test123456&TLD=com&Address1=123.123.123.123&HostName1=test123456test123456.com&RecordType1=A&UID=resellid&PW=resellpw&ResponseType=xml",
-	  #            https://reseller.enom.com/interface.asp?Command=SetHosts&SLD=test123456test123456&TLD=com&Address1=123.123.123.123&HostName1=test123456test123456.com&RecordType1=A&UID=resellid&PW=resellpw&ResponseType=xml
+      :request => "https://reseller.enom.com/interface.asp?Command=SetHosts&SLD=test123456test123456&TLD=com&Address1=123.123.123.123&HostName1=%40&RecordType1=A&UID=resellid&PW=resellpw&ResponseType=xml",
       :response => <<-EOF      
         <?xml version="1.0" ?> 
         <interface-response>
@@ -586,7 +585,7 @@ class Test::Unit::TestCase
     },
 	  {
       :command => "SetHosts (include www)",
-      :request => "https://reseller.enom.com/interface.asp?Command=SetHosts&SLD=test123456test123456&TLD=com&Address1=123.123.123.123&HostName1=test123456test123456.com&RecordType1=A&Address2=hosting.realpractice.com&HostName2=www&RecordType2=CNAME&Address3=hosting.realpractice.com&HostName3=*&RecordType3=CNAME&UID=resellid&PW=resellpw&ResponseType=xml",
+      :request => "https://reseller.enom.com/interface.asp?Command=SetHosts&SLD=test123456test123456&TLD=com&Address1=123.123.123.123&HostName1=%40&RecordType1=A&Address2=hosting.realpractice.com&HostName2=www&RecordType2=CNAME&Address3=hosting.realpractice.com&HostName3=*&RecordType3=CNAME&UID=resellid&PW=resellpw&ResponseType=xml",
       :response => <<-EOF      
         <?xml version="1.0" ?> 
         <interface-response>
