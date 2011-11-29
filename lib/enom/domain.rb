@@ -76,7 +76,7 @@ module Enom
       response["interface_response"].each do |k, v|
         if v == "210" #&& k[0,6] == "RRPCode"
           pos = k[7..k.size]
-          result << response["interface_response"]["Domain#{pos}"] unless k.blank?
+          result << response["interface_response"]["Domain#{pos}"] unless k.empty?
         end
       end
 
