@@ -562,6 +562,46 @@ class Test::Unit::TestCase
            </debug>
         </interface-response>
       EOF
+    },
+	  {
+      :command => "SetHosts (single)",
+      :request => "https://reseller.enom.com/interface.asp?Command=SetHosts&SLD=test123456test123456&TLD=com&Address1=123.123.123.123&HostName1=%40&RecordType1=A&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF      
+        <?xml version="1.0" ?> 
+        <interface-response>
+          <DomainRRP>E</DomainRRP> 
+          <Command>SETHOSTS</Command> 
+          <ErrCount>0</ErrCount>
+          <Server>Dev Workstation</Server> 
+          <Site>enom</Site> 
+          <IsLockable>True</IsLockable> 
+          <IsRealTimeTLD>True</IsRealTimeTLD> 
+          <Done>true</Done>
+          <debug> 
+             <![CDATA[  ]]> 
+          </debug>
+        </interface-response>
+      EOF
+    },
+	  {
+      :command => "SetHosts (include www)",
+      :request => "https://reseller.enom.com/interface.asp?Command=SetHosts&SLD=test123456test123456&TLD=com&Address1=123.123.123.123&HostName1=%40&RecordType1=A&Address2=123.123.123.123&HostName2=www&RecordType2=CNAME&Address3=123.123.123.123&HostName3=*&RecordType3=CNAME&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF      
+        <?xml version="1.0" ?> 
+        <interface-response>
+          <DomainRRP>E</DomainRRP> 
+          <Command>SETHOSTS</Command> 
+          <ErrCount>0</ErrCount>
+          <Server>Dev Workstation</Server> 
+          <Site>enom</Site> 
+          <IsLockable>True</IsLockable> 
+          <IsRealTimeTLD>True</IsRealTimeTLD> 
+          <Done>true</Done>
+          <debug> 
+             <![CDATA[  ]]> 
+          </debug>
+        </interface-response>
+      EOF
     }
   ]
 

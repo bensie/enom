@@ -76,7 +76,7 @@ module Enom
       response["interface_response"].each do |k, v|
         if v == "210" #&& k[0,6] == "RRPCode"
           pos = k[7..k.size]
-          result << response["interface_response"]["Domain#{pos}"] unless k.blank?
+          result << response["interface_response"]["Domain#{pos}"] unless k.empty?
         end
       end
 
@@ -235,6 +235,19 @@ module Enom
 
     def renew!(options = {})
       Domain.renew!(name, options)
+    end
+    
+    def set_hosts(hosts, include_www = false) 
+      std_opts = {'Command' => 'SetHosts', 'SLD' => self.sld, 'TLD' => self.tld}
+      hosts.each_with_index do |host, index|
+        std_opts.merge!({"Address#{index + 1}" => host, "HostName#{index + 1}" => "@",  "RecordType#{index + 1}" => "A"})
+        if include_www
+          std_opts.merge!({"Address#{index + hosts.size + 1}" => host, "HostName#{index + hosts.size + 1}" => "www",  "RecordType#{index + hosts.size + 1}" => "CNAME"})
+          std_opts.merge!({"Address#{index + (hosts.size * 2) + 1}" => host, "HostName#{index + (hosts.size * 2) + 1}" => "*",  "RecordType#{index + (hosts.size * 2) + 1}" => "CNAME"})                  
+        end
+      end
+      response = Client.request(std_opts)["interface_response"]
+      response["Done"] =~ /true/i && response["ErrCount"] == "0"
     end
 
     private
