@@ -137,18 +137,9 @@ class DomainTest < Test::Unit::TestCase
 	  
 	    should "set the host records to a specific host including the www. subdomain" do
         assert_kind_of Enom::Domain, @domain
-        assert @domain.set_hosts(['123.123.123.123'], true)
+        assert @domain.set_hosts(['123.123.123.123'], :include_www => true)
       end
     end    
-
-    context "transfer a domain" do
-      setup do
-        @result = Enom::Domain.transfer!("resellerdocs2.net", "ros8enQi")
-      end
-      should "transfer the domain and return true if successful" do
-        assert @result
-      end
-    end
 
     context "transfer a domain" do
       setup do
