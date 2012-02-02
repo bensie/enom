@@ -64,7 +64,7 @@ class DomainTest < Test::Unit::TestCase
       should "return an array of suggestions matching the supplied term" do
         @suggestions = Enom::Domain.suggest("hand.com")
         assert !@suggestions.empty?
-        
+
         results = %w(
           handsewncurtains.net
           handsewncurtains.tv
@@ -95,11 +95,11 @@ class DomainTest < Test::Unit::TestCase
 
         assert_equal results, @suggestions
       end
-      
-      should "only return the results matching specified tlds" do 
+
+      should "only return the results matching specified tlds" do
         @suggestions = Enom::Domain.suggest("hand.com", :tlds => %w(com net))
         assert !@suggestions.empty?
-        
+
         results = %w(
           handsewncurtains.net
           handicappingclub.net
@@ -184,7 +184,7 @@ class DomainTest < Test::Unit::TestCase
         should "update nameservers if there are 2 or more provided" do
           new_nameservers = ["ns1.foo.com", "ns2.foo.com"]
           @domain.update_nameservers(new_nameservers)
-          assert_equal new_nameservers, @domain.nameservers
+          assert_equal new_nameservers, @domain.nameservers.sort
         end
         should "not update nameservers if less than 2 or more than 12 are provided" do
           not_enough = ["ns1.foo.com"]
