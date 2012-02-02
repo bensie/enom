@@ -1,3 +1,5 @@
+require "public_suffix"
+
 module Enom
 
   class Domain
@@ -16,7 +18,7 @@ module Enom
 
     def initialize(attributes)
       @name = attributes["DomainName"] || attributes["domainname"]
-      @sld, @tld = @name.split(".")
+      @sld, @tld = Domain.parse_sld_and_tld(@name)
 
       expiration_date_string = attributes["expiration_date"] || attributes["status"]["expiration"]
       @expiration_date = Date.strptime(expiration_date_string.split(" ").first, "%m/%d/%Y")
@@ -31,7 +33,7 @@ module Enom
 
     # Find the domain (must be in your account) on Enom
     def self.find(name)
-      sld, tld = name.split(".")
+      sld, tld = parse_sld_and_tld(name)
       response = Client.request("Command" => "GetDomainInfo", "SLD" => sld, "TLD" => tld)["interface_response"]["GetDomainInfo"]
       Domain.new(response)
     end
@@ -43,7 +45,7 @@ module Enom
 
     # Boolean helper method to determine if the domain is available for purchase
     def self.available?(name)
-      sld, tld = name.split(".")
+      sld, tld = parse_sld_and_tld(name)
       response = Client.request("Command" => "Check", "SLD" => sld, "TLD" => tld)["interface_response"]["RRPCode"]
       response == "210"
     end
@@ -76,7 +78,7 @@ module Enom
       response["interface_response"].each do |k, v|
         if v == "210" #&& k[0,6] == "RRPCode"
           pos = k[7..k.size]
-          result << response["interface_response"]["Domain#{pos}"] unless k.blank?
+          result << response["interface_response"]["Domain#{pos}"] unless k.nil? || k.empty?
         end
       end
 
@@ -94,7 +96,7 @@ module Enom
 
     # Purchase the domain
     def self.register!(name, options = {})
-      sld, tld = name.split(".")
+      sld, tld = parse_sld_and_tld(name)
       opts = {}
       if options[:nameservers]
         count = 1
@@ -114,7 +116,7 @@ module Enom
     # Transfer domain from another registrar to Enom, charges the account when successful
     # Returns true if successful, false if failed
     def self.transfer!(name, auth, options = {})
-      sld, tld = name.split(".")
+      sld, tld = parse_sld_and_tld(name)
 
       # Default options
       opts = {
@@ -136,7 +138,7 @@ module Enom
 
     # Renew the domain
     def self.renew!(name, options = {})
-      sld, tld = name.split(".")
+      sld, tld = parse_sld_and_tld(name)
       opts = {}
       opts.merge!("NumYears" => options[:years]) if options[:years]
       response = Client.request({"Command" => "Extend", "SLD" => sld, "TLD" => tld}.merge(opts))
@@ -146,11 +148,11 @@ module Enom
     # Suggest available domains using the namespinner
     # Returns an array of available domain names that match
     def self.suggest(name, options ={})
-      sld, tld = name.split(".")
+      sld, tld = parse_sld_and_tld(name)
       opts = {}
       opts.merge!("MaxResults" => options[:max_results] || 8, "Similar" => options[:similar] || "High")
       response = Client.request({"Command" => "namespinner", "SLD" => sld, "TLD" => tld}.merge(opts))
-      
+
       suggestions = []
       response["interface_response"]["namespin"]["domains"]["domain"].map do |d|
         (options[:tlds] || %w(com net tv cc)).each do |toplevel|
@@ -158,6 +160,12 @@ module Enom
         end
       end
       return suggestions
+    end
+
+    # Parse out domain name tld and sld from the PublicSuffix lib
+    def self.parse_sld_and_tld(domain_name)
+      d = PublicSuffix.parse(domain_name)
+      [d.sld, d.tld]
     end
 
     # Lock the domain at the registrar so it can"t be transferred
