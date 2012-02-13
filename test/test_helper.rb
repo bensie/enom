@@ -562,6 +562,39 @@ class Test::Unit::TestCase
            </debug>
         </interface-response>
       EOF
+    },
+    {
+      :command => "DeleteRegistration",
+      :request => "https://reseller.enom.com/interface.asp?Command=DeleteRegistration&SLD=resellerdocs3&TLD=com&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF
+        <?xml version="1.0"?>
+        <interface-response>
+          <deletedomain>
+            <domaindeleted>True</domaindeleted>
+          </deletedomain>
+          <ErrString/>
+          <ErrSource/>
+          <ErrSection>DELETEREGISTRATION</ErrSection>
+          <RRPCode>200</RRPCode>
+          <RRPText>Command completed successfully</RRPText>
+          <Command>DELETEREGISTRATION</Command>
+          <Language>eng</Language>
+          <ErrCount>0</ErrCount>
+          <ResponseCount>0</ResponseCount>
+          <MinPeriod>1</MinPeriod>
+          <MaxPeriod>10</MaxPeriod>
+          <Server>RESELLERTEST</Server>
+          <Site>enom</Site>
+          <IsLockable>True</IsLockable>
+          <IsRealTimeTLD>True</IsRealTimeTLD>
+          <TimeDifference>+03.00</TimeDifference>
+          <ExecTime>2.75</ExecTime>
+          <Done>true</Done>
+          <debug>
+            [CDATA ]
+          </debug>
+        </interface-response>
+      EOF
     }
   ]
 

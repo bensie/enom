@@ -126,6 +126,16 @@ class DomainTest < Test::Unit::TestCase
       end
     end
 
+    context "deleting a domain" do
+      setup do
+        @result = Enom::Domain.delete!("resellerdocs3.com")
+      end
+
+      should "delete the domain and return true" do
+        assert @result
+      end
+    end
+
     context "transfer a domain" do
       setup do
         @result = Enom::Domain.transfer!("resellerdocs2.net", "ros8enQi")

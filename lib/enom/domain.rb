@@ -112,6 +112,15 @@ module Enom
       Domain.find(name)
     end
 
+    # Delete a domain name registration.
+    #
+    # Returns true if successful, false if failed.
+    def self.delete!(name, options = {})
+      sld, tld = parse_sld_and_tld(name)
+
+      response = Client.request({'Command' => 'DeleteRegistration', 'SLD' => sld, 'TLD' => tld}.merge(options))['interface_response']
+      response['RRPCode'].to_i == 200
+    end
 
     # Transfer domain from another registrar to Enom, charges the account when successful
     # Returns true if successful, false if failed
