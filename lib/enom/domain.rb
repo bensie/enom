@@ -112,7 +112,9 @@ module Enom
       Domain.find(name)
     end
 
-    # Delete a domain name registration.
+    # Delete a domain name registration from your account. The domain must be
+    # less than 5 days old and you must be on Enom's "DeleteRegistration
+    # whitelist" for resellers (your account rep can enable it for you).
     #
     # Returns true if successful, false if failed.
     def self.delete!(name, options = {})
