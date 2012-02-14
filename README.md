@@ -48,6 +48,11 @@ Enom::Domain.available?("example.com")
 # Register a domain
 d = Enom::Domain.register!("example.com")
 # => #<Enom::Domain:0x1019f3b78...
+
+# Delete a registration (domain must be less than 5 days old and your account
+# must be on Enom's DeleteRegistration whitelist - your Enom account rep can
+# enable it for you)
+Enom::Domain.delete!("example.com")
 ```
 
 ## Domain Operations
