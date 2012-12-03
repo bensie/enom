@@ -204,10 +204,10 @@ module Enom
     def sync_auth_info(options = {})
 
       opts = {
-        "RunSynchAutoInfo" => 1,
-        "EmailEPP" => 1
+        "RunSynchAutoInfo" => 'True',
+        "EmailEPP" => 'True'
       }
-      opts["EmailEPP"] = 1 if options[:email]
+      opts["EmailEPP"] = 'True' if options[:email]
 
       Client.request({"Command" => "SynchAuthInfo", "SLD" => sld, "TLD" => tld}.merge(opts))
       return self

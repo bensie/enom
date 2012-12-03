@@ -626,7 +626,7 @@ class Test::Unit::TestCase
     },
     {
       :command => "SynchAuthInfo",
-      :request => "https://reseller.enom.com/interface.asp?Command=SynchAuthInfo&SLD=test123456test123456&TLD=com&RunSynchAutoInfo=1&EmailEPP=1&UID=resellid&PW=resellpw&ResponseType=xml",
+      :request => "https://reseller.enom.com/interface.asp?Command=SynchAuthInfo&SLD=test123456test123456&TLD=com&RunSynchAutoInfo=True&EmailEPP=True&UID=resellid&PW=resellpw&ResponseType=xml",
       :response => <<-EOF
         <?xml version="1.0"?>
         <interface-response>
