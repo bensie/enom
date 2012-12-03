@@ -98,6 +98,8 @@ module Enom
     def self.register!(name, options = {})
       sld, tld = parse_sld_and_tld(name)
       opts = {}
+      options = options.dup
+      
       if options[:nameservers]
         count = 1
         options.delete(:nameservers).each do |nameserver|
