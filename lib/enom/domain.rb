@@ -100,14 +100,17 @@ module Enom
       opts = {}
       if options[:nameservers]
         count = 1
-        options[:nameservers].each do |nameserver|
+        options.delete(:nameservers).each do |nameserver|
           opts.merge!("NS#{count}" => nameserver)
           count += 1
         end
       else
         opts.merge!("UseDNS" => "default")
       end
-      opts.merge!("NumYears" => options[:years]) if options[:years]
+
+      opts.merge!("NumYears" => options.delete(:years)) if options[:years]
+      opts.merge!(options)
+                  
       response = Client.request({"Command" => "Purchase", "SLD" => sld, "TLD" => tld}.merge(opts))
       Domain.find(name)
     end
