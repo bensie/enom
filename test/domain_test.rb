@@ -136,6 +136,18 @@ class DomainTest < Test::Unit::TestCase
       end
     end
 
+    context "sync_auth_info for domain" do
+      setup do
+        @domain = Enom::Domain.find("test123456test123456.com")
+        @result = @domain.sync_auth_info(
+                                         )
+      end
+
+      should "return the domain" do
+        assert @result
+      end
+    end
+
     context "transfer a domain" do
       setup do
         @result = Enom::Domain.transfer!("resellerdocs2.net", "ros8enQi")

@@ -193,6 +193,22 @@ module Enom
       return self
     end
 
+    #
+    # synchronize EPP key with Registry, and optionally email it to owner
+    #
+    def sync_auth_info(options = {})
+
+      opts = {
+        "RunSynchAutoInfo" => 1,
+        "EmailEPP" => 1
+      }
+      opts["EmailEPP"] = 1 if options[:email]
+
+      Client.request({"Command" => "SynchAuthInfo", "SLD" => sld, "TLD" => tld}.merge(opts))
+      return self
+    end
+
+
     # Check if the domain is currently locked.  locked? helper method also available
     def locked
       unless defined?(@locked)

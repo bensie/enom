@@ -595,7 +595,33 @@ class Test::Unit::TestCase
           </debug>
         </interface-response>
       EOF
+    },
+    {
+      :command => "SynchAuthInfo",
+      :request => "https://reseller.enom.com/interface.asp?Command=SynchAuthInfo&SLD=test123456test123456&TLD=com&RunSynchAutoInfo=1&EmailEPP=1&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF
+        <?xml version="1.0"?>
+        <interface-response>
+          <InfoSynched>True</InfoSynched> 
+          <EPPEmailMessage>Email has been sent.</EPPEmailMessage> 
+          <Command>SYNCHAUTHINFO</Command> 
+          <Language>eng</Language> 
+          <ErrCount>0</ErrCount> 
+          <ResponseCount>0</ResponseCount> 
+          <MinPeriod>1</MinPeriod> 
+          <MaxPeriod>10</MaxPeriod> 
+          <Server>RESELLER1-STG</Server> 
+          <Site>enom</Site> 
+          <IsLockable>True</IsLockable> 
+          <IsRealTimeTLD>True</IsRealTimeTLD> 
+          <TimeDifference>+03.00</TimeDifference> 
+          <ExecTime>1.715</ExecTime> 
+          <Done>true</Done> 
+          <debug><![CDATA[  ]]></debug>
+        </interface-response>
+      EOF
     }
+
   ]
 
   commands.each do |c|
