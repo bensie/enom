@@ -104,4 +104,4 @@ d.renew!(:years => 3)
 
 ## Copyright
 
-Copyright (c) 2011 James Miller
+Copyright (c) 2011-2013 James Miller
