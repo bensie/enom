@@ -39,6 +39,34 @@ class Test::Unit::TestCase
       EOF
     },
     {
+      :command => "Purchase (with attrs)",
+      :request => "https://reseller.enom.com/interface.asp?Command=Purchase&SLD=test123456test123456&TLD=com&UseDNS=default&RegistrantFirstName=Test&RegistrantLastName=Tester&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF
+        <?xml version="1.0"?>
+        <interface-response>
+          <OrderID>157609741</OrderID>
+          <TotalCharged>15</TotalCharged>
+          <RegistrantPartyID>{CF869235-0083-4BB0-99DF-DCEAC6F2294E}</RegistrantPartyID>
+          <RRPCode>200</RRPCode>
+          <RRPText>Command completed successfully - 157609741</RRPText>
+          <Command>PURCHASE</Command>
+          <Language>eng</Language>
+          <ErrCount>0</ErrCount>
+          <ResponseCount>0</ResponseCount>
+          <MinPeriod>1</MinPeriod>
+          <MaxPeriod>10</MaxPeriod>
+          <Server>RESELLERTEST</Server>
+          <Site>eNom</Site>
+          <IsLockable>True</IsLockable>
+          <IsRealTimeTLD>True</IsRealTimeTLD>
+          <TimeDifference>+08.00</TimeDifference>
+          <ExecTime>2.938</ExecTime>
+          <Done>true</Done>
+          <debug><![CDATA[]]></debug>
+        </interface-response>
+      EOF
+    },
+    {
       :command => "Check (Failure)",
       :request => "https://reseller.enom.com/interface.asp?Command=Check&SLD=google&TLD=com&UID=resellid&PW=resellpw&ResponseType=xml",
       :response => <<-EOF
@@ -595,7 +623,33 @@ class Test::Unit::TestCase
           </debug>
         </interface-response>
       EOF
+    },
+    {
+      :command => "SynchAuthInfo",
+      :request => "https://reseller.enom.com/interface.asp?Command=SynchAuthInfo&SLD=test123456test123456&TLD=com&RunSynchAutoInfo=True&EmailEPP=True&UID=resellid&PW=resellpw&ResponseType=xml",
+      :response => <<-EOF
+        <?xml version="1.0"?>
+        <interface-response>
+          <InfoSynched>True</InfoSynched> 
+          <EPPEmailMessage>Email has been sent.</EPPEmailMessage> 
+          <Command>SYNCHAUTHINFO</Command> 
+          <Language>eng</Language> 
+          <ErrCount>0</ErrCount> 
+          <ResponseCount>0</ResponseCount> 
+          <MinPeriod>1</MinPeriod> 
+          <MaxPeriod>10</MaxPeriod> 
+          <Server>RESELLER1-STG</Server> 
+          <Site>enom</Site> 
+          <IsLockable>True</IsLockable> 
+          <IsRealTimeTLD>True</IsRealTimeTLD> 
+          <TimeDifference>+03.00</TimeDifference> 
+          <ExecTime>1.715</ExecTime> 
+          <Done>true</Done> 
+          <debug><![CDATA[  ]]></debug>
+        </interface-response>
+      EOF
     }
+
   ]
 
   commands.each do |c|
