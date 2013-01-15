@@ -15,9 +15,17 @@ module Enom
     # Domain expiration date (currently returns a string - 11/9/2010 11:57:39 AM)
     attr_reader :expiration_date
 
-
     def initialize(attributes)
-      @name = attributes["DomainName"] || attributes["domainname"]
+      #
+      # use __content__ to get domainname if needed
+      # @see https://github.com/sferik/multi_xml/pull/27
+      #
+      @name = if attributes["domainname"]
+                attributes["domainname"]["__content__"] || attributes["domainname"]
+              else
+                attributes["DomainName"]
+              end
+
       @sld, @tld = Domain.parse_sld_and_tld(@name)
 
       expiration_date_string = attributes["expiration_date"] || attributes["status"]["expiration"]
