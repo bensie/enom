@@ -126,12 +126,34 @@ class DomainTest < Test::Unit::TestCase
       end
     end
 
+    context "registering a domain with some options" do
+      setup do
+        @domain = Enom::Domain.register!("test123456test123456.com", "RegistrantFirstName" => "Test", "RegistrantLastName" => "Tester" )
+      end
+      should "pass opts along" do
+        assert_kind_of Enom::Domain, @domain
+        assert_equal @domain.name, "test123456test123456.com"
+      end
+    end
+
     context "deleting a domain" do
       setup do
         @result = Enom::Domain.delete!("resellerdocs3.com")
       end
 
       should "delete the domain and return true" do
+        assert @result
+      end
+    end
+
+    context "sync_auth_info for domain" do
+      setup do
+        @domain = Enom::Domain.find("test123456test123456.com")
+        @result = @domain.sync_auth_info(
+                                         )
+      end
+
+      should "return the domain" do
         assert @result
       end
     end

@@ -15,9 +15,17 @@ module Enom
     # Domain expiration date (currently returns a string - 11/9/2010 11:57:39 AM)
     attr_reader :expiration_date
 
-
     def initialize(attributes)
-      @name = attributes["DomainName"] || attributes["domainname"]
+      #
+      # use __content__ to get domainname if needed
+      # @see https://github.com/sferik/multi_xml/pull/27
+      #
+      @name = if attributes["domainname"]
+                attributes["domainname"]["__content__"] || attributes["domainname"]
+              else
+                attributes["DomainName"]
+              end
+
       @sld, @tld = Domain.parse_sld_and_tld(@name)
 
       expiration_date_string = attributes["expiration_date"] || attributes["status"]["expiration"]
@@ -98,16 +106,21 @@ module Enom
     def self.register!(name, options = {})
       sld, tld = parse_sld_and_tld(name)
       opts = {}
+      options = options.dup
+      
       if options[:nameservers]
         count = 1
-        options[:nameservers].each do |nameserver|
+        options.delete(:nameservers).each do |nameserver|
           opts.merge!("NS#{count}" => nameserver)
           count += 1
         end
       else
         opts.merge!("UseDNS" => "default")
       end
-      opts.merge!("NumYears" => options[:years]) if options[:years]
+
+      opts.merge!("NumYears" => options.delete(:years)) if options[:years]
+      opts.merge!(options)
+                  
       response = Client.request({"Command" => "Purchase", "SLD" => sld, "TLD" => tld}.merge(opts))
       Domain.find(name)
     end
@@ -192,6 +205,22 @@ module Enom
       @locked = false
       return self
     end
+
+    #
+    # synchronize EPP key with Registry, and optionally email it to owner
+    #
+    def sync_auth_info(options = {})
+
+      opts = {
+        "RunSynchAutoInfo" => 'True',
+        "EmailEPP" => 'True'
+      }
+      opts["EmailEPP"] = 'True' if options[:email]
+
+      Client.request({"Command" => "SynchAuthInfo", "SLD" => sld, "TLD" => tld}.merge(opts))
+      return self
+    end
+
 
     # Check if the domain is currently locked.  locked? helper method also available
     def locked
