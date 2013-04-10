@@ -96,7 +96,7 @@ module Enom
     # Find and return all domains in the account
     def self.all(options = {})
       response = Client.request("Command" => "GetAllDomains")["interface_response"]["GetAllDomains"]["DomainDetail"]
-      response = [response] unless response.is_a?(Array)
+      response = Array[response].flatten unless response.is_a?(Array)
 
       domains = []
       response.each {|d| domains << Domain.new(d) }
