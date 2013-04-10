@@ -4,12 +4,12 @@ module Enom
     include HTTParty
 
     class << self
-      attr_accessor :username, :password, :test
+      attr_accessor :username, :password, :test, :remote_ip
       alias_method :test?, :test
 
       # All requests must contain the UID, PW, and ResponseType query parameters
       def default_params
-        { "UID" => self.username, "PW" => self.password, "ResponseType" => "xml"}
+        { "UID" => self.username, "PW" => self.password, "ResponseType" => "xml", "EndUserIP" => self.remote_ip}
       end
 
       # Enom has a test platform and a production platform.  Both are configured to use
